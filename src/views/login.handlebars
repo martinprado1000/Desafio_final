@@ -1,0 +1,65 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link text-light" href="/register">Registrarse</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-primary" href="/recovery-password">Recuperar contraseña</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <div class="card text-center">
+    <div class="card-header">
+      Iniciar sesion
+    </div>
+    <form
+      class="row g-3 needs-validation"
+      novalidate
+      name="formLoginUser"
+      id="formLoginUser"
+      action="/api/login"
+      method="POST"
+    >
+      <div class="card-body">
+        <label for="emailLogin" class="form-label">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          placeholder="Ingrese su correo"
+        />
+        <label for="passwordLogin" class="form-label mt-3">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          placeholder="Ingrese su contraseña"
+        />
+        {{#if hasError}}
+          <p class="mt-2 bg-danger text-white form-control">{{error}}</p>
+        {{/if}}
+        <button
+          class="btn btn-primary mt-2"
+          id="btnLogin"
+          name="btnLogin"
+        >Iniciar sesion</button>
+      </div>
+    </form>
+  </div>
+  <a href="/api/loginGithub" class="btn btn-dark mt-3"><i class="fa fa-github" style="font-size:36px"></i> Iniciar sesión con GitHub</a>
+</div>
+
+<!-- bootstrap -->
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+  crossorigin="anonymous"
+></script>

@@ -1,0 +1,184 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a
+            class="nav-link active text-light"
+            aria-current="page"
+            href="/realTimeProducts"
+          >Productos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="/users">Usuarios</a>
+        </li>
+        {{! <li class="nav-item">
+          <a class="nav-link disabled text-light" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li> }}
+      </ul>
+      <form action="">
+      <li class="nav-item dropdown d-flex me-4">
+        <a
+          class="nav-link dropdown-toggle text-primary me-5"
+          href="#"
+          id="navbarDropdown"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{userSession}}
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li><a class="dropdown-item" id="MyCart" name="MyCart" href="#">Mi carrito</a></li>
+          <li><button class="dropdown-item" type="submit" id="logOut" name="logOut">Cerrar sisión</button></li>
+          {{! <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li> }}
+        </ul>
+      </li>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<form
+  name="formProducts"
+  id="formProducts"
+  class="row needs-validation mt-2 mx-2"
+  enctype="multipart/form-data"
+  novalidate
+>
+  <div class="col-6">
+    <input type="hidden" id="id" name="id" value="{{data.id}}"/>
+    <div class="col-md">
+      <label for="title" class="form-label">Título del producto</label>
+      <input
+        name="title"
+        class="form-control"
+        id="title"
+        placeholder="Ingrese un título"
+        value="{{data.title}}"
+        required
+      />
+      <div class="valid-feedback">
+        Looks good!
+      </div>
+    </div>
+    <div class="col-md">
+      <label for="description" class="form-label mt-3">Descripción</label>
+      <input
+        name="description"
+        type="text-area"
+        class="form-control"
+        id="description"
+        placeholder="Ingrese una descripción"
+        value="{{data.description}}"
+        required
+      />
+      <div class="valid-feedback">
+        Looks good!
+      </div>
+    </div>
+    <div class="col-md">
+      <label for="price" class="form-label mt-3">Precio</label>
+      <input
+        name="price"
+        type="number"
+        class="form-control"
+        id="price"
+        placeholder="Ingrese el precio"
+        value="{{data.price}}"
+        required
+      />
+      <div class="valid-feedback">
+        Looks good!
+      </div>
+    </div>
+    <div class="col-md">
+      <label for="code" class="form-label mt-3">Codigo</label>
+      <input
+        name="code"
+        type="text"
+        class="form-control"
+        id="code"
+        placeholder="Ingrese el código"
+        value="{{data.code}}"
+        required
+        disabled
+      />
+      <div class="invalid-feedback">
+        Please provide a valid city.
+      </div>
+    </div>
+    <div class="col-md">
+      <label for="category" class="form-label mt-3">Categoria</label>
+      <select
+        name="category"
+        type="text"
+        class="form-control"
+        id="category"
+        placeholder="Ingrese la categoria"
+        required
+      >
+        <option>{{data.category}}</option>
+        <option value="pc">PC</option>
+        <option value="monitor">Monitor</option>
+        <option value="teclado">Teclado</option>
+      </select>
+      <div class="invalid-feedback">
+        Please provide a valid city.
+      </div>
+    </div>
+    <div class="col-md">
+      <label for="stock" class="form-label mt-3">Stock</label>
+      <input
+        name="stock"
+        type="number"
+        class="form-control"
+        id="stock"
+        placeholder="Ingrese stock"
+        value="{{data.stock}}"
+        required
+      />
+      <div class="invalid-feedback">
+        Please provide a valid zip.
+      </div>
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="col-md">
+      <label for="thumbnail" class="form-label">Imagenes</label>
+      <input
+        name="thumbnail"
+        type="file"
+        class="form-control"
+        id="thumbnail"
+        placeholder="Ingrese URL de las imagenes"
+        value="{{data.thumbnail}}"
+        required
+      />
+      <div class="invalid-feedback">
+        Please provide a valid zip.
+      </div>
+    </div>
+    <button class="btn btn-success mt-3" name="update" id="update">Editar</button>
+    <a href="/realTimeProducts" class="btn btn-danger mt-3">Cancelar edición</a>
+  </div>
+</form>
+
+<!-- LLamamos al servisor io para ejecutarlo aca en el frontend,
+como esto ejecuta el servidor este ya establece la comunicacion cada vez que se actualiza la paguina -->
+<script src="/socket.io/socket.io.js"></script>
+
+<!-- Aca le paso mi js publico -->
+<script src="/js/realTimeProductsAdminPid.js"></script>
+<script src="/js/navBar.js"></script>
+
+<!-- bootstrap -->
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+  crossorigin="anonymous"
+></script>
+
+<!-- sweetalert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

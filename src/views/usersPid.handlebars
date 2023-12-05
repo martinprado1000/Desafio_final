@@ -1,0 +1,205 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+  <div class="container-fluid">
+    {{! <a class="navbar-brand text-light" href="#">Navbar</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button> }}
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a
+            class="nav-link text-light"
+            aria-current="page"
+            href="/realTimeProducts"
+          >Productos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active text-light" href="/users">Usuarios</a>
+        </li>
+        {{! <li class="nav-item">
+          <a class="nav-link disabled text-light" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li> }}
+      </ul>
+      <form action="">
+        <li class="nav-item dropdown d-flex me-4">
+          <a
+            class="nav-link dropdown-toggle text-primary me-5"
+            id="navbarDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {{userSession}}
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" id="MyCart" name="MyCart" href="#">Mi
+                carrito</a></li>
+            <li><button
+                class="dropdown-item"
+                type="submit"
+                id="logOut"
+                name="logOut"
+              >Cerrar sisión</button></li>
+            {{! <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li> }}
+          </ul>
+        </li>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<form
+  name="formUser"
+  id="formUser"
+  class="row needs-validation mt-2 mx-2"
+  enctype="multipart/form-data"
+  novalidate
+>
+  <div class="col-6">
+    <input type="hidden" id="id" name="id" value="{{data.id}}" />
+    <div class="col-md">
+      <label for="name" class="form-label">Nombre</label>
+      <input
+        type="text"
+        name="name"
+        class="form-control"
+        id="name"
+        placeholder="Ingrese un nombre"
+        value="{{data.name}}"
+        required
+      />
+      <div class="valid-feedback">
+        Looks good!
+      </div>
+    </div>
+    <div class="col-md">
+      <label for="lastname" class="form-label mt-3">Apellido</label>
+      <input
+        name="lastname"
+        type="text"
+        class="form-control"
+        id="lastname"
+        placeholder="Ingrese una descripción"
+        value="{{data.lastname}}"
+        required
+      />
+      <div class="valid-feedback">
+        Looks good!
+      </div>
+    </div>
+    <div class="col-md">
+      <label for="email" class="form-label mt-3">Email</label>
+      <input
+        name="email"
+        type="email"
+        class="form-control"
+        id="email"
+        placeholder="Ingrese un email"
+        value="{{data.email}}"
+        disabled
+      />
+      <div class="valid-feedback">
+        Looks good!
+      </div>
+    </div>
+    <div class="col-md">
+      <label for="age" class="form-label mt-3">Edad</label>
+      <input
+        name="age"
+        type="number"
+        class="form-control"
+        id="age"
+        placeholder="Ingrese la edad"
+        value="{{data.age}}"
+        required
+      />
+      <div class="invalid-feedback">
+        Please provide a valid city.
+      </div>
+    </div>
+    <div class="col-md">
+      <label for="rol" class="form-label mt-3">Rol</label>
+      <select
+        name="rol"
+        type="text"
+        class="form-control"
+        id="rol"
+        placeholder="Seleccione un rol"
+        required
+      >
+        <option>{{data.rol}}</option>
+        <option value="admin">Admin</option>
+        <option value="premium">Premium</option>
+        <option value="user">User</option>
+      </select>
+      <div class="invalid-feedback">
+        Please provide a valid city.
+      </div>
+    </div>
+    {{!-- <div class="col-md">
+      <label for="stock" class="form-label mt-3">Stock</label>
+      <input
+        name="stock"
+        type="number"
+        class="form-control"
+        id="stock"
+        placeholder="Ingrese stock"
+        value="{{data.stock}}"
+        required
+      />
+      <div class="invalid-feedback">
+        Please provide a valid zip.
+      </div>
+    </div> --}}
+  </div>
+  <div class="col-6">
+    {{!-- <div class="col-md">
+      <label for="thumbnail" class="form-label">Imagenes</label>
+      <input
+        name="thumbnail"
+        type="file"
+        class="form-control"
+        id="thumbnail"
+        placeholder="Ingrese URL de las imagenes"
+        value="{{data.thumbnail}}"
+        required
+      />
+      <div class="invalid-feedback">
+        Please provide a valid zip.
+      </div> 
+    </div> --}}
+    <button
+      class="btn btn-success mt-3"
+      name="submit"
+      id="submit"
+    >Editar</button>
+    <a href="/users" class="btn btn-danger mt-3">Cancelar edición</a>
+  </div>
+</form>
+
+<!-- LLamamos al servisor io para ejecutarlo aca en el frontend,
+como esto ejecuta el servidor este ya establece la comunicacion cada vez que se actualiza la paguina -->
+<script src="/socket.io/socket.io.js"></script>
+
+<!-- Aca le paso mi js publico -->
+<script src="/js/usersPid.js"></script>
+<script src="/js/navBar.js"></script>
+
+<!-- bootstrap -->
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+  crossorigin="anonymous"
+></script>
+
+<!-- sweetalert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
