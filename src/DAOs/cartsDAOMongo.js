@@ -16,7 +16,20 @@ class CartsDAOMongo {
 
   async getById(id) {
     try {
-      return await this.cartsModel.findById(id);
+      const result = await this.cartsModel.findById(id).populate("products.product");
+      // lean(); retorna todo el objeto y los subobjetos en objetos notivos de js
+      return result
+    } catch (e) {
+      console.log(e)
+      throw new Error("Error inesperado al realizar la consulta getById");
+    }
+  }
+
+  async getByIdLean(id) {
+    try {
+      const result = await this.cartsModel.findById(id).populate("products.product").lean();
+      // lean(); retorna todo el objeto y los subobjetos en objetos notivos de js
+      return result
     } catch (e) {
       console.log(e)
       throw new Error("Error inesperado al realizar la consulta getById");
@@ -32,8 +45,9 @@ class CartsDAOMongo {
   }
 
   async post(body) {
+    console.log(body)
     try {
-      return await this.cartsModel.create(body);
+      return await this.cartsModel.create({email:body});
     } catch (e) {
       throw new Error("Error inesperado al realizar la consulta post");
     }

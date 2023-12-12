@@ -46,41 +46,6 @@ class CartsService {
     }
   }
 
-  async getByIdLean(id) {
-    if (!isValid(id)) {
-      return { status: 404, data: "ID del carrito invalido" };
-    }
-    try {
-      const result = await this.CartsRepository.getByIdLean(id);
-      if (!result) {
-        return { status: 404, data: "Carrito inexistente" };
-      }
-      if (result == "") {
-        return { status: 404, data: "Carrito sin productos" };
-      }
-      return { status: 200, data: result };
-    } catch (e) {
-      console.log(e);
-      return { status: 500, data: "Error inesperado en el sistema" };
-    }
-  }
-
-  async getByEmail(email) {
-    try {
-      const result = await this.CartsRepository.getByEmail(email);
-      if (!result) {
-        return { status: 404, data: "Carrito inexistente" };
-      }
-      if (result == "") {
-        return { status: 404, data: "Carrito sin productos" };
-      }
-      return { status: 200, data: result };
-    } catch (e) {
-      console.log(e);
-      return { status: 500, data: "Error inesperado en el sistema" };
-    }
-  }
-
   async post(body) {
     try {
       const cartFound = await this.CartsRepository.getByEmail(body.email);
@@ -130,6 +95,7 @@ class CartsService {
       return { status: 500, data: "Error inesperado en el sistema" };
     }
   }
+  
 
   // Queries de productos en un carrito ----------------------------------------
 
@@ -138,57 +104,38 @@ class CartsService {
       return { status: 404, data: "ID invalido" };
     }
     if (!cid || !pid) {
-      return {
-        status: 404,
-        data: "Debe enviar un id de carrito y de producto",
-      };
+      return { status: 404, data: "Debe enviar un id de carrito y de producto" };
     }
     try {
       const cartFound = await this.CartsRepository.getById(cid);
-      //const cartFound = await this.getById(cid);
-      //console.log(cartFound)
       if (!cartFound) {
         return {
           status: 404,
           data: "Carrito inexistente",
         };
       }
-      if (cartFound == "") {
-        return {
-          status: 404,
-          data: "Carrito sin productos",
-        };
-      }
       const productFound = cartFound.products.find((p) => p.product == pid);
-      //console.log(productFound)
       if (!productFound) {
         return { status: 404, data: "Producto no encontrado en el carrito" };
       }
       return { status: 200, data: productFound };
     } catch (e) {
+      console.log({cid,pid})
       return { status: 500, data: "Error inesperado en el sistema" };
     }
   }
 
   async postProductFromCart({ cid, pid, body }) {
-    const quantity = parseInt(body.quantity)
-    const addProduct = {
-          "product": pid, // Este seria el _id de la colleccion a la que hago referencia.
-          "quantity": quantity,
-    };
-    console.log(addProduct)
     // Valido id de mongo
     if (!isValid(cid) || !isValid(pid)) {
       return { status: 404, data: "ID invalido" };
     }
-    if (!quantity) {
-      return { status: 404, data: "Debe ingresar la cantidad" };
-    }
-    if (quantity <= 0) {
+    if (body.quantity <= 0) {
       return { status: 404, data: "Cantidad de producto incorrecta" };
     }
     try {
-      let cartFound = await this.CartsRepository.getByIdNotDto(cid);
+      let cartFound = await this.CartsRepository.getById(cid);
+      console.log(cartFound)
       // Valido si existe el carrito
       if (!cartFound) {
         return {
@@ -196,7 +143,7 @@ class CartsService {
           data: "Carrito inexistente",
         };
       }
-      
+      console.log(cartFound)
       const productFound = await this.ProductsRepository.getById(pid);
       // Valido si existe el producto
       if (!productFound) {
@@ -206,40 +153,34 @@ class CartsService {
         };
       }
       // Valido stock disponible
-      if (productFound.stock < quantity) {
+      if (productFound.stock < body.quantity) {
         return {
           status: 404,
           data: "Stock insuficiente",
         };
       }
-
-      // Busco el producto en el carrito
-      let productFoundInCart = cartFound.products.find(
-        (p) => p.product._id == pid
-      );
-
-      // Valido si el carrita esta vacio o si existe el producto en el carrito
-      if (cartFound.products == "" || productFoundInCart == undefined) {
-        cartFound.products.push(addProduct);
-        //console.log(cartFound)
+      
+      let productFoundInCart = cartFound.products.find((p) => p.product._id == pid );
+      // Valido si existe el producto en el carrito
+      if (!productFoundInCart) {
+        cartFound.products.push(body);
         await this.CartsRepository.save(cartFound);
         // Actualizo el stock
-        const updatedStock = productFound.stock - quantity;
+        const updatedStock = productFound.stock - body.quantity;
         this.ProductsRepository.put(pid, { stock: updatedStock });
         return {
           status: 201,
           data: "el producto no existe en el carrito. Porducto agregado",
         };
       }
-
-      productFoundInCart.quantity = productFoundInCart.quantity + quantity;
+      productFoundInCart.quantity = productFoundInCart.quantity + body.quantity;
       await this.CartsRepository.save(cartFound);
       // Actualizo el stock
-      const updatedStock = productFound.stock - quantity;
+      const updatedStock = productFound.stock - body.quantity;
       this.ProductsRepository.put(pid, { stock: updatedStock });
       return {
         status: 201,
-        data: `El producto existe en el carrito, se le suma la cantidad de ${quantity}`,
+        data: `El producto existe en el carrito, se le suma la cantidad de ${body.quantity}`,
       };
     } catch (e) {
       console.log(e);
@@ -253,11 +194,11 @@ class CartsService {
       return { status: 404, data: "ID invalido" };
     }
     // Valido mayor que 0
-    if (quantity <= 0) {
+    if (body.quantity <= 0) {
       return { status: 404, data: "La cantidad debe ser mayor a cero" };
     }
     try {
-      let cartFound = await this.CartsRepository.getByIdNotDto(cid);
+      let cartFound = await this.CartsRepository.getById(cid);
       // Valido si existe el carrito
       if (!cartFound) {
         return {
@@ -284,22 +225,22 @@ class CartsService {
         };
       }
       // Valido stock disponible
-      if (productFound.stock < quantity) {
+      if (productFound.stock < body.quantity) {
         return {
           status: 404,
           data: "Stock insuficiente",
         };
       }
       // Calculo actualizacion del stock de los productos
-      const updatedQuantity = productFoundInCart.quantity - quantity;
+      const updatedQuantity = productFoundInCart.quantity - body.quantity;
       const updatedStock = productFound.stock + updatedQuantity;
 
       // Actualizo quantity del producto en el carrito
-      productFoundInCart.quantity = quantity;
+      productFoundInCart.quantity = body.quantity;
       await this.CartsRepository.save(cartFound);
 
       // Actualizo stock de los productos
-      this.ProductsRepository.put(pid, { stock: updatedStock });
+      this.ProductsRepository.put(pid,{stock: updatedStock});
       return {
         status: 201,
         data: `Cantidad del producto editada correctamente`,
@@ -329,9 +270,7 @@ class CartsService {
           data: "Producto inexistente",
         };
       }
-      const productFoundInCart = cartFound.products.find(
-        (p) => p.product == pid
-      );
+      const productFoundInCart = cartFound.products.find((p) => p.product == pid);
       if (!productFoundInCart) {
         return {
           status: 404,

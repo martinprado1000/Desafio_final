@@ -1,4 +1,5 @@
 const UsersRepository = require("../repositories/usersRepository");
+const CartsRepository = require("../repositories/cartsRepository");
 const mongoose = require("mongoose");
 const { hashPassword, isValidPassword } = require("../utils/passwordHash");
 
@@ -10,6 +11,7 @@ const isValid = (id) => {
 class UsersService {
   constructor() {
     this.usersRepository = new UsersRepository();
+    this.cartsRepository = new CartsRepository();
   }
 
   async get() {
@@ -147,14 +149,27 @@ class UsersService {
   async post(body) {
     const { name, lastname, age, email, rol, password, passwordRepit } = body;
     try {
-      if (!name || !lastname || !age || !email || !password || !passwordRepit) {
-        return { status: 404, data: "Campos incompletos" };
-      }
-      const userFound = await this.usersRepository.getByEmail(email);
-      if (userFound != null) {
-        return { status: 404, data: "El email de usuario ya existe" };
-      }
-      await this.usersRepository.post(body);
+      // if (
+      //   !name ||
+      //   !lastname ||
+      //   !age ||
+      //   !email ||
+      //   //!rol ||
+      //   !password ||
+      //   !passwordRepit
+      // ) {
+      //   return { status: 404, data: "Campos incompletos" };
+      // }
+      // if (password != passwordRepit || password == "") {
+      //   return { status: 404, data: "Contraseñas incorrectassss" };
+      // }
+      // const userFound = await this.usersRepository.getByEmail(email);
+      // if (userFound != null) {
+      //   return { status: 404, data: "El email de usuario ya existe" };
+      // }
+      body.password = hashPassword(body.password);
+      await this.usersRepository.post(body); // Creo el usuario
+      await this.cartsRepository.post(email); // Creo el carrito default
       return { status: 201, data: "Usuario ingresado correctamente" };
     } catch (e) {
       console.log(e);
@@ -239,21 +254,21 @@ class UsersService {
 
   async userLogin(username, password) {
     try {
-      let user = await this.getByEmail(username); 
+      let user = await this.getByEmail(username);
       if (user.status !== 200) {
-        return { message:`Usuario o password incorrecto` }
+        return { message: `Usuario o password incorrecto` };
       }
-      if (!isValidPassword(password, user.data.password)) { // Comparo la password, esto me retorna true o false.
-        return { message:`Usuario o password incorrecto` }
+      if (!isValidPassword(password, user.data.password)) {
+        // Comparo la password, esto me retorna true o false.
+        return { message: `Usuario o password incorrecto` };
       }
       console.log(`${user.data.email} a iniciado sesion`);
       delete user.data.password; // Borro la contraseña para que no quede en el backend
-      return user.data
-      } catch (e) {
+      return user.data;
+    } catch (e) {
       return { message: `Error inesperado al loguear el usuario. ${e}` };
     }
   }
-
 }
 
 module.exports = UsersService;

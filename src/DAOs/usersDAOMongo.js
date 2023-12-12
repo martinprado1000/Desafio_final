@@ -38,6 +38,7 @@ class UsersDAOMongo {
       }
     
       async post(body) {
+        console.log(body)
         try {
           return await this.usersModel.create(body);
         } catch (e) {

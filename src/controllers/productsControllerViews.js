@@ -1,8 +1,10 @@
 const ProductsService = require("../services/productsService");
+const CartsService = require("../services/cartsService");
 
 class ProductsControllerViews {
   constructor() {
     this.productsService = new ProductsService();
+    this.cartsService = new CartsService();
   }
 
   async get(req, res) {
@@ -14,12 +16,15 @@ class ProductsControllerViews {
   async realTimeProducts(req, res) {
     const userSession = req.user?.name;
     const query = req.query;
+    const userEmail = req.user?.email;
     const result = await this.productsService.getPaginate(query);
     const data = result.data;
+    const resultCart = await this.cartsService.getByEmail(userEmail);
+    const dataCartId = resultCart.data.id
     if (req.user?.rol == "admin") {
-      res.render("realTimeProductsAdmin.handlebars", { data, userSession, title: "Products Admin"});
+      res.render("realTimeProductsAdmin.handlebars", { data, userSession, dataCartId, title: "Products Admin"});
     } else {
-      res.render("realTimeProducts.handlebars", { data, userSession, title: "Products"});
+      res.render("realTimeProducts.handlebars", { data, userSession, dataCartId, title: "Products"});
     }
   }
   // async realTimeProductsAdmin(req,res){
@@ -53,13 +58,14 @@ class ProductsControllerViews {
   async realTimeProductsPid(req, res) {
     const userSession = req.user?.name;
     const userSessionId = req.user?.id;
-    console.log(userSessionId)
+    const userEmail = req.user?.email;
     const query = req.query;
     const pid = req.params.pid;
     const result = await this.productsService.getById(pid);
     const data = result.data;
-    console.log(data);
-    res.render("realTimeProductsPid.handlebars", { data, userSession, userSessionId, title: "Page product id" });
+    const resultCart = await this.cartsService.getByEmail(userEmail);
+    const dataCartId = resultCart.data.id
+    res.render("realTimeProductsPid.handlebars", { data, dataCartId, userSession, userSessionId, title: "Page product id" });
   }
 
   // async getById(req,res){

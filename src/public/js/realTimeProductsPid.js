@@ -5,10 +5,11 @@ console.log(socket);
 const goToCart = document.getElementById("goToCart");
 const quantityInput = document.getElementById("quantity");
 const idUserInput = document.getElementById("idUser");
+const cartIdInput = document.getElementById("cartId"); 
 // const btnSubmit = document.getElementById("submit");
 // const btnUpdate = document.getElementById("update");
 // const btnCancelUpdate = document.getElementById("cancelUpdate");
-const idInput = document.getElementById("id");
+const idProductInput = document.getElementById("idProduct"); 
 // const titleInput = document.getElementById("title");
 // const descriptionInput = document.getElementById("description");
 // const priceInput = document.getElementById("price");
@@ -20,9 +21,10 @@ const idInput = document.getElementById("id");
 
 // Obtengo los datos del formulario
 const obtenerDatos = () => {
-  const id = idInput.value;
+  const idProduct = idProductInput.value;
   const quantity = quantityInput.value;
   const idUser = idUserInput.value;
+  const cartId = cartIdInput.value;
   // const title = titleInput.value;
   //const description = descriptionInput.value;
   // const price = priceInput.value;
@@ -31,9 +33,10 @@ const obtenerDatos = () => {
   // const stock = stockInput.value;
   // const category = categoryInput.value;
   const product = {
-    id,
+    idProduct,
     quantity,
-    idUser
+    idUser,
+    cartId
     //title,
     // description,
     // price,
@@ -79,25 +82,28 @@ addToCartBtn.addEventListener("click", async (e) => {
   e.preventDefault();
   const body = obtenerDatos()
   console.log(body)
-  fetch(`/api/carts/${body.idUser}/product/${body.id}`, {
+  await fetch(`/api/carts/${body.cartId}/product/${body.idProduct}`, {
     method: "POST",
-    headers: { "Content-type": "aplication/json;charset=UTF-8" },
+    headers: { "Content-type": "application/json" },
     body: JSON.stringify(body),
   })
     .then((res) => res.json())
     .then((res) => {
-      if (res.status == 200) {
+      if (res.status == 201) {
         Swal.fire({
-          title: res,
+          title: res.data,
           icon: "success", // succes , warning , info , question
-          timer: 3000,
+          timer: 2000,
           timerProgressBar: true,
         });
+        setTimeout(() => {
+          window.location.href = "http://localhost:8080/realTimeProducts";
+        }, 2000);
       } else {
         Swal.fire({
-          title: res,
+          title: res.data,
           icon: "info", // succes , warning , info , question
-          timer: 3000,
+          timer: 2000,
           timerProgressBar: true,
         });
       }

@@ -65,7 +65,7 @@
   novalidate
 >
   <div class="col-6">
-    <input type="hidden" id="id" name="id"/>
+    <input type="hidden" id="id" name="id" />
     <div class="col-md">
       <label for="name" class="form-label">Nombre</label>
       <input
@@ -157,28 +157,39 @@
     </div> --}}
   </div>
   <div class="col-6">
-    {{!-- <div class="col-md">
-      <label for="thumbnail" class="form-label">Imagenes</label>
-      <input
-        name="thumbnail"
-        type="file"
-        class="form-control"
-        id="thumbnail"
-        placeholder="Ingrese URL de las imagenes"
-        value="{{data.thumbnail}}"
-        required
-      />
-      <div class="invalid-feedback">
-        Please provide a valid zip.
-      </div> 
-    </div> --}}
+    <label for="password" class="form-label">Contraseña</label>
+    <input
+      type="password"
+      class="form-control"
+      id="password"
+      name="password"
+      placeholder="Ingrese una contraseña"
+      {{! required }}
+    />
+    <div class="invalid-feedback">
+      Ingrese una contraseña!
+    </div>
+
+    <label for="passwordRepit" class="form-label mt-3">Repita la contraseña</label>
+    <input
+      type="password"
+      class="form-control"
+      id="passwordRepit"
+      name="passwordRepit"
+      placeholder="Repita la contraseña"
+      {{! required }}
+    />
+    <div class="invalid-feedback">
+      Repita la contraseña!
+    </div>
+
     <button
-      class="btn btn-success mt-3"
+      class="btn btn-success mt-4"
       type="submit"
       name="submit"
       id="submit"
     >Guardar usuario</button>
-    <a href="/users" class="btn btn-danger mt-3">Cancelar</a>
+    <a href="/users" class="btn btn-danger mt-4">Cancelar</a>
   </div>
 </form>
 

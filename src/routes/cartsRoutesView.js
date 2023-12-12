@@ -1,15 +1,15 @@
 const {Router} = require("express")
 
-const CartsRouterView = require("../controllers/cartsControllerView")
+const CartsControllerView = require("../controllers/cartsControllerView")
 
 const cartRouterView = new Router()
 
-const cartsControllerView = new CartsRouter();
+const cartsControllerView = new CartsControllerView();
 
 // Rutas consultas del carrito
-cartRouter.get("/carts",cartsControllerView.get.bind(cartsControllerView))
-cartRouter.get("/carts/:cid",cartsControllerView.getById.bind(cartsControllerView))
-cartRouter.post("/carts",cartsControllerView.post.bind(cartsControllerView))
+cartRouterView.get("/carts",cartsControllerView.carts.bind(cartsControllerView))
+cartRouterView.get("/carts/:cid",cartsControllerView.cartsCid.bind(cartsControllerView))
+cartRouterView.post("/carts",cartsControllerView.post.bind(cartsControllerView))
 
 
 module.exports = cartRouterView

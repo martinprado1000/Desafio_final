@@ -6,16 +6,18 @@ class CartsControllerView {
   }
 
   // Edicion de carritos ----------------------------------------
-  async get(req,res) {
+  async carts(req,res) {
       const limit = parseInt(req.query.limit);
       const result = await this.cartsService.get(limit);
       res.json(result);
   }
 
-  async getById(req,res) {
+  async cartsCid(req,res) {
+    const userSession = req.user?.name;
     const cid = req.params.cid;
-    const result = await this.cartsService.getById(cid);
-    res.json(result);
+    const result = await this.cartsService.getByIdLean(cid);
+    const data = result.data
+    res.render("cartsCid.handlebars",{ title:"Page cart id", userSession, data });
   }
 
   async post(req,res) {

@@ -24,6 +24,7 @@ class ProductsController {
 
     async post(req,res){
         const body = req.body
+        body.owner = req.user?.email // Al body le agrego al creador del producto
         const result = await this.productsService.post(body)
         res.json(result)
     }

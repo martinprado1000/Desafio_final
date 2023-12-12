@@ -70,6 +70,7 @@ const io = ioFn(httpServer);
 
 const productsRoutesViews = require("./routes/productsRoutesView.js")
 const productsRoutes = require("./routes/productsRoutes")
+const cartsRoutesViews = require("./routes/cartsRoutesView")
 const cartsRoutes = require("./routes/cartsRoutes")
 const sessionsRoutesViews = require("./routes/sessionsRoutesView.js")
 const sessionsRoutes = require("./routes/sessionsRoutes.js")
@@ -81,6 +82,7 @@ app.use("/api",cartsRoutes)
 app.use("/api",sessionsRoutes)
 app.use("/api",usersRoutes)
 app.use("/",productsRoutesViews)
+app.use("/",cartsRoutesViews)
 app.use("/",sessionsRoutesViews)
 app.use("/",usersRouterView)
 

@@ -1,0 +1,104 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a
+            class="nav-link active text-light"
+            aria-current="page"
+            href="/realTimeProducts"
+          >Productos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="/carts/{{dataCartId}}">Mi Carrito</a>
+        </li>
+        {{! <li class="nav-item">
+          <a class="nav-link disabled text-light" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li> }}
+      </ul>
+      <form action="">
+        <li class="nav-item dropdown d-flex me-4">
+          <a
+            class="nav-link dropdown-toggle text-primary me-5"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {{userSession}}
+          </a>
+          {{!-- <a href="">{{userSessionId}}</a> --}}
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" id="MyCart" name="MyCart" href="#">Mi
+                carrito</a></li>
+            <li><button
+                class="dropdown-item"
+                type="submit"
+                id="logOut"
+                name="logOut"
+              >Cerrar sisión</button></li>
+            {{! <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li> }}
+          </ul>
+        </li>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="mx-3 mt-3 row">
+  <input type="hidden" id="cartId" name="cartId" value="asdasdasdasdasd">
+  {{!-- <input type="hidden" id="cartId" name="cartId" value="{{dataCartId}}"> --}}
+
+  
+    <table class="table table-sm table-dark table-sm" id="tableProducts">
+      <thead>
+        <tr>
+          <th scope="col" class="col-2">Titulo</th>
+          <th scope="col" class="col-4">Descripcion</th>
+          <th scope="col" class="col-1">Precio</th>
+          <th scope="col" class="col-1">Stock</th>
+          <th scope="col" class="col-2">Cantidad en el carrito</th>
+          <th scope="col" class="col-1">Modificar cantidad</th>
+          <th scope="col" class="col-1"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each data.products}}
+          <tr id="celda">
+            <td>{{this.product.title}}</td>
+            <td>{{this.product.description}}</td>
+            <td>{{this.product.price}}</td>
+            <td>{{this.product.stock}}</td>
+            <td class="text-center">{{this.quantity}}</td>
+            <td class="text-center"><input type="number"></td>
+            <td><button
+                value={{this._id}}
+                class="productId btn btn-primary sm btn-sm"
+              >Editar</button>
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  
+</div>
+
+<!-- LLamamos al servisor io para ejecutarlo aca en el frontend,
+como esto ejecuta el servidor este ya establece la comunicacion cada vez que se actualiza la paguina -->
+<script src="/socket.io/socket.io.js"></script>
+
+<!-- Aca le paso mi js publico -->
+<script src="/js/cartsCid.js"></script>
+<script src="/js/navBar.js"></script>
+
+<!-- bootstrap -->
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+  crossorigin="anonymous"
+></script>
+
+<!-- sweetalert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

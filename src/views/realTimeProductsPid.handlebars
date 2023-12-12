@@ -10,7 +10,7 @@
           >Productos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-light" href="#">Link</a>
+          <a class="nav-link text-light" href="/carts/{{dataCartId}}">Mi Carrito</a>
         </li>
         {{! <li class="nav-item">
           <a class="nav-link disabled text-light" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
@@ -29,9 +29,10 @@
             {{userSession}}
           </a>
           <input type="hidden" id="idUser" name="idUser" value="{{userSessionId}}">
+          <input type="hidden" id="cartId" name="cartId" value="{{dataCartId}}">
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" id="MyCart" name="MyCart" href="#">Mi
-                carrito</a></li>
+            <li><a class="dropdown-item" id="MyCart" name="MyCart" href="#">Cambiar 
+                password</a></li>
             <li><button
                 class="dropdown-item"
                 type="submit"
@@ -55,7 +56,7 @@
   novalidate
 >
   <div class="col-6">
-    <input name="id" type="hidden" id="id" value="{{data.id}}" />
+    <input type="hidden" name="idProduct" id="idProduct" value="{{data.id}}" />
     <div class="col-md">
       <label for="title" class="form-label">Título del producto</label>
       <input

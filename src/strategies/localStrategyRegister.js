@@ -13,7 +13,6 @@ new LocalStrategy( // Instanciamos el passport, el primer parametro es un objeto
   { passReqToCallback: true, usernameField: "email" }, // Si no le indicamos el email toma por default el nombre si tiene.
   async (req, username, password, done) => {
     const result = await this.usersService.userCreateRegister(req, username, password);
-    console.log(result)
     if(result.message){
       done(null,false,result.message)
     } else {

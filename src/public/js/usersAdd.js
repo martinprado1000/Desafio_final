@@ -5,28 +5,31 @@ console.log(socket);
 const submitForm = document.getElementById("userProducts");
 const btnSubmit = document.getElementById("submit");
 const btnCancelUpdate = document.getElementById("cancelUpdate");
-const idInput = document.getElementById("id");
 const nameInput = document.getElementById("name");
 const lastnameInput = document.getElementById("lastname");
 const ageInput = document.getElementById("age");
 const emailInput = document.getElementById("email");
 const rolInput = document.getElementById("rol");
+const passwordInput = document.getElementById("password");
+const passwordRepitInput = document.getElementById("passwordRepit");
 
 // Obtengo los datos del formulario
 const obtenerDatos = () => {
-  const id = idInput.value;
   const name = nameInput.value;
   const lastname = lastnameInput.value;
   const age = ageInput.value;
   const email = emailInput.value;
   const rol = rolInput.value;
+  const password = passwordInput.value;
+  const passwordRepit = passwordRepitInput.value;
   const product = {
-    id,
     name,
     lastname,
     age,
     email,
-    rol
+    rol,
+    password,
+    passwordRepit
   };
   return product;
 };
@@ -76,7 +79,7 @@ submitForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const body = obtenerDatos();
   console.log(body)
-  await fetch(`/api/users/${body.id}`, {
+  await fetch(`/api/users`, {
     method: "POST",
     headers: { "Content-type": "application/json" },
     body: JSON.stringify(body),

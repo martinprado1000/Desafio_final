@@ -2,6 +2,7 @@
 
 const cartsFactory = require("../factories/cartsFactory");
 const CartsDTO = require("../DTOs/cartsDTO");
+const ProductsDTO = require("../DTOs/productsDTO");
 
 class CartsRepository {
   constructor() {
@@ -17,11 +18,23 @@ class CartsRepository {
   }
 
   async getById(id) {
-    const result = await this.dao.getById(id);
+    let result = await this.dao.getById(id);
     if (result == null) {
       return result;
     }
-    //return new CartsDTO(result);
+    return new CartsDTO(result);
+  }
+
+  async getByIdLean(id) {
+    let result = await this.dao.getByIdLean(id);
+    if (result == null) {
+      return result;
+    }
+    return new CartsDTO(result);
+  }
+  async getByIdNotDto(id) {
+    const result = await this.dao.getById(id);
+    console.log(result)
     return result
   }
 
