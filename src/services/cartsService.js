@@ -170,8 +170,8 @@ class CartsService {
   async postProductFromCart({ cid, pid, body }) {
     const quantity = parseInt(body.quantity)
     const addProduct = {
-          "product": pid, // Este seria el _id de la colleccion a la que hago referencia.
-          "quantity": quantity,
+      "product": pid, // Este seria el _id de la colleccion a la que hago referencia.
+      "quantity": quantity,
     };
     // Valido id de mongo
     if (!isValid(cid) || !isValid(pid)) {
@@ -192,7 +192,7 @@ class CartsService {
           data: "Carrito inexistente",
         };
       }
-      
+
       const productFound = await this.ProductsRepository.getById(pid);
       // Valido si existe el producto
       if (!productFound) {
@@ -328,7 +328,7 @@ class CartsService {
       const productFoundInCart = cartFound.products.find(
         (p) => p.product.id == pid
       );
-      
+
       if (!productFoundInCart) {
         return {
           status: 404,
@@ -352,6 +352,63 @@ class CartsService {
       return { status: 500, data: "Error inesperado en el sistema" };
     }
   }
+
+  async getCartsBuy({ cid }) {
+    if (!isValid(cid)) {
+      return { status: 404, data: "ID invalido" };
+    }
+    try {
+      const cartFound = await this.CartsRepository.getById(cid);
+      if (!cartFound) {
+        return {
+          status: 404,
+          data: "Carrito inexistente",
+        };
+      }
+      //console.log(cartFound)
+      // let producsPrice = 0
+      // let price = 0;
+      // let totalPrice = 0;
+      // let result = cartFound.products.map((p) => {
+      //   if(p.quantity > 1){
+      //     console.log("MAYOR a 1")
+      //     console.log(p.quantity)
+      //     console.log(p.product.price)
+      //     producsPrice = p.product.price * p.quantity
+      //     totalPrice = price + producsPrice 
+      //     console.log(totalPrice)
+      //   } else {
+      //     console.log("menor a 1")
+      //     producsPrice = p.product.price
+      //     totalPrice = price + producsPrice
+      //   }
+      //   return totalPrice
+      // });
+      // console.log(result[0])
+      console.log(cartFound)
+      let producsPrice = 0;
+      let totalPrice = 0;
+      let result = cartFound.products.reduce((accumulator, p) => {
+        if (p.quantity > 1) {
+          producsPrice = p.product.price * p.quantity;
+        } else {
+          producsPrice = p.product.price;
+        }
+        totalPrice = accumulator + producsPrice;
+        return totalPrice;
+      }, 0);
+
+      console.log(result);
+
+      // if (!productFound) {
+      //   return { status: 404, data: "Producto no encontrado en el carrito" };
+      // }
+      // return { status: 200, data: productFound };
+    } catch (e) {
+      return { status: 500, data: "Error inesperado en el sistema" };
+    }
+  }
+
 }
 
 module.exports = CartsService;

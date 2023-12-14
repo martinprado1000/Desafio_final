@@ -18,6 +18,7 @@ cartRouter.get("/carts/:cid/product/:pid",cartsController.getProductFromCart.bin
 cartRouter.post("/carts/:cid/product/:pid",cartsController.postProductFromCart.bind(cartsController))
 cartRouter.put("/carts/:cid/product/:pid",cartsController.putProductFromCart.bind(cartsController))
 cartRouter.delete("/carts/:cid/product/:pid",cartsController.deleteProductFromCart.bind(cartsController))
+cartRouter.get("/cartsBuy/:cid",cartsController.getCartsBuy.bind(cartsController))
 
 module.exports = cartRouter
 

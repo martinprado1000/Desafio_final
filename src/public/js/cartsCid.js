@@ -3,6 +3,7 @@ console.log(socket);
 
 // Obtengo los id de cada elemento
 const cartId = document.getElementById("cartId");
+const buyBtn = document.getElementById("buy");
 
 
 // Obtengo los datos del formulario
@@ -10,6 +11,20 @@ const obtenerDatos = () => {
   const cid = cartId.value;
   return cid;
 };
+
+buyBtn.addEventListener('click', async function(event) {
+  console.log("holaaaaaaaaaaa")
+  const cid = obtenerDatos()
+  console.log(`/api/cartsBuy/${cid}`)
+  await fetch(`/api/cartsBuy/${cid}`, {
+    method: "GET",
+    headers: { "Content-type": "application/json;charset=UTF-8" }
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      console.log(res)
+    })
+})
 
 //goToCart.addEventListener("click", async (e) => {
 //console.log("holaaaa")

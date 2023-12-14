@@ -81,6 +81,7 @@ const addToCartBtn = document.getElementById("addToCart");
 addToCartBtn.addEventListener("click", async (e) => {
   e.preventDefault();
   const body = obtenerDatos();
+  console.log(body)
   if (!body.cartId) {
     Swal.fire({
       title: "Para agregar productos a un carrito debe registrarse con un correo",

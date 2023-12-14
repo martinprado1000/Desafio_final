@@ -67,6 +67,13 @@ class CartsController {
     const result = await this.cartsService.deleteProductFromCart({ cid, pid });
     res.json(result);
   }
+
+  async getCartsBuy(req,res) {
+    const cid = req.params.cid;
+    const result = await this.cartsService.getCartsBuy({ cid });
+    res.json(result);
+  }
+  
 }
 
 module.exports = CartsController;
