@@ -24,21 +24,6 @@ class SessionsController {
     return res.redirect("/realTimeProducts");
   }
 
-  // async deleteRegister(req,res){
-  //     //const body = req.body
-  //     // const result = await this.sessionService.deleteRegister()
-  //     // res.json(result)
-  //     //console.log(req.session)
-  //     req.session.destroy((err) => {
-  //         if (!err) {
-  //           console.log("Se destruyo la sesion");
-  //           res.json({ status: 200, data: "Se destruyo la sesion" });
-  //         } else {
-  //           res.send(err);
-  //         }
-  //       });
-  // }
-
   async deleteRegister(req,res) {
     const result = await this.sessionService.deleteRegister(req);
     console.log(result)

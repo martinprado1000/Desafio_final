@@ -15,9 +15,13 @@ class CartsControllerView {
   async cartsCid(req,res) {
     const userSession = req.user?.name;
     const cid = req.params.cid;
+    const userEmail = req.user?.email;
     const result = await this.cartsService.getByIdLean(cid);
     const data = result.data
-    res.render("cartsCid.handlebars",{ title:"Page cart id", userSession, data });
+    const resultCart = await this.cartsService.getByEmail(userEmail);
+    const productsInCart = resultCart.data.products == "" ? true : false; // Le indico al front si hay productos en el carrito
+    const dataCartId = resultCart.data.id
+    res.render("cartsCid.handlebars",{ title:"Page cart id", userSession, data, dataCartId, productsInCart });
   }
 
   async post(req,res) {

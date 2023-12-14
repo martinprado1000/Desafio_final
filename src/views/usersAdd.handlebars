@@ -16,22 +16,25 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a
-            class="nav-link text-light"
+            class="nav-link active text-light"
             aria-current="page"
             href="/realTimeProducts"
           >Productos</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active text-light" href="/users">Usuarios</a>
-        </li>
+        {{#if isAdmin}}
+          <li class="nav-item">
+            <a class="nav-link text-light" href="/users">Usuarios</a>
+          </li>
+        {{/if}}
+
         {{! <li class="nav-item">
           <a class="nav-link disabled text-light" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
         </li> }}
       </ul>
       <form action="">
-        <li class="nav-item dropdown d-flex me-4">
+        <li class="nav-item dropdown d-flex me-2">
           <a
-            class="nav-link dropdown-toggle text-primary me-5"
+            class="nav-link dropdown-toggle text-primary"
             id="navbarDropdown"
             role="button"
             data-bs-toggle="dropdown"
@@ -39,9 +42,9 @@
           >
             {{userSession}}
           </a>
+          <a class="nav-link">Usuario {{rol}}</a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" id="MyCart" name="MyCart" href="#">Mi
-                carrito</a></li>
+            <li><a class="dropdown-item" id="perfil" name="perfil" href="#">Perfil</a></li>
             <li><button
                 class="dropdown-item"
                 type="submit"

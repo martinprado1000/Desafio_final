@@ -12,7 +12,6 @@ class ServicesController {
     
     async getPaginate(req,res){
         const query = req.query;
-        console.log(query)
         const result = await this.usersService.getPaginate(query)
         res.json(result)
     }

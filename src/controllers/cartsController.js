@@ -49,9 +49,7 @@ class CartsController {
     const cid = req.params.cid;
     const pid = req.params.pid;
     const body = req.body;
-    console.log(body)
     const result = await this.cartsService.postProductFromCart({cid,pid,body});
-    console.log(result)
     res.json(result);
   }
 

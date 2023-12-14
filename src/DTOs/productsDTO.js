@@ -10,7 +10,8 @@ class ProductsDTO {
     this.thumbnail = product.thumbnail;
     this.category = product.category;
     this.stock = product.stock;
-    this.owner = product.owner
+    this.owner = product.owner;
+    this.ownerRol = product.ownerRol
   }
 }
 

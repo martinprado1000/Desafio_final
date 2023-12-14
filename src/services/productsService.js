@@ -1,4 +1,6 @@
 const ProductsRepository = require("../repositories/productsRepository");
+const UsersRepository = require("../repositories/usersRepository");
+const sendMailFn = require("../utils/sendMailFn")
 const mongoose = require("mongoose");
 
 // Funcion para validar si los id son validos para mongo
@@ -9,6 +11,7 @@ const isValid = (id) => {
 class ProductsService {
   constructor() {
     this.ProductsRepository = new ProductsRepository();
+    this.UsersRepository = new UsersRepository();
   }
 
   async get() {
@@ -194,10 +197,21 @@ class ProductsService {
       if (!id) {
         return { status: 400, data: "Debe enviar un ID valido" };
       }
+
+      const product = await this.getById(id) //Obtengo el producto antes de eliminar
+
       const result = await this.ProductsRepository.delete(id);
       if (result.deletedCount == 0) {
         return { status: 404, data: "Producto no encontrado" };
       }
+
+      // Obtengo el dueño del producto para enviar correo que se elimino su producto en caso de ser premium.
+      const user = await this.UsersRepository.getByEmail(product.data.owner)
+      if(user.rol == "premium"){ // Si el dueño del producto es premium le envio un correo
+        const result = sendMailFn(user.email , product.data.code)
+        //console.log(result)
+      }
+
       return { status: 201, data: "Producto eliminado correctamente" };
     } catch (e) {
       console.log(e);

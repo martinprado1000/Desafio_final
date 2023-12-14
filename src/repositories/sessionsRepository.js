@@ -6,7 +6,6 @@ const SessionsDTO = require("../DTOs/sessionsDTO");
 class SessionsRepository {
   constructor() {
     this.dao = sessionsFactory(process.env.PERSISTENCE);
-    //console.log(this.dao);
   }
 
   async get() {

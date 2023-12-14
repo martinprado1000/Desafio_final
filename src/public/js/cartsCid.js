@@ -25,39 +25,123 @@ const obtenerDatos = () => {
 // });
 
 //Editar producto
-const buttonFn = () => {
+const updateButton = document.querySelectorAll('.productIdUpdate');
+const deleteButton = document.querySelectorAll('.productIdDelete');
 
-  const productIdBtn = document.getElementsByClassName("productId");
-  for (var i = 0; i < productIdBtn.length; i++) {
-    productIdBtn[i].onclick = async function () {
-      const body = obtenerDatos()
-      console.log(body)
-      var pid = this.value;
-      console.log("Editar producto: " + pid);
-      console.log(`/api/carts/${body}/product/${pid}`)
-      await fetch(`/api/carts/${body}/product/${pid}`, {
-        method: "PUT",
-        headers: { "Content-type": "application/json;charset=UTF-8" },
-        body: JSON.stringify(body),
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          console.log(res)
-        });
-      // const addProdutToCart = {
-      //   email,
-      //   products: [
-      //     {
-      //       product: pid,
-      //       quantity: 1,
-      //     },
-      //   ],
-      // };
-      // socket.emit("addCart", addProdutToCart);
-    };
-  }
-};
-buttonFn();
+// Iterar sobre los botones y añadir un manejador de eventos para cada uno
+updateButton.forEach(button => {
+  button.addEventListener('click', async function(event) {
+    const row = event.target.closest('tr');
+    let body = row.querySelector('.quantity').value;
+    body = parseInt(body)
+    body = {"quantity":body}
+    const pid = event.target.value;
+    const cid = obtenerDatos()
+    console.log(body);
+    console.log('Editar cantidad del producto:', pid);
+    await fetch(`/api/carts/${cid}/product/${pid}`, {
+      method: "PUT",
+      headers: { "Content-type": "application/json;charset=UTF-8" },
+      body: JSON.stringify(body),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res)
+        if (res.status == 201) {
+          Swal.fire({
+            title: res.data,
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+          });
+          setTimeout(() => {
+            window.location.href =
+              `http://localhost:8080/carts/${cid}`;
+          }, 2000);
+        } else {
+          Swal.fire({
+            title: res.data,
+            icon: "info",
+            timer: 2000,
+            timerProgressBar: true,
+          });
+        }
+
+      });
+  });
+});
+
+deleteButton.forEach(button => {
+  button.addEventListener('click', async function(event) {
+    const row = event.target.closest('tr');
+    let body = row.querySelector('.quantity').value;
+    body = parseInt(body)
+    body = {"quantity":body}
+    const pid = event.target.value;
+    const cid = obtenerDatos()
+    console.log(body);
+    console.log('Eliminar del carrito el producto:', pid);
+    await fetch(`/api/carts/${cid}/product/${pid}`, {
+      method: "DELETE",
+      headers: { "Content-type": "application/json;charset=UTF-8" },
+      body: JSON.stringify(body),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res)
+        if (res.status == 204) {
+          Swal.fire({
+            title: res.data,
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+          });
+          setTimeout(() => {
+            window.location.href =
+              `http://localhost:8080/carts/${cid}`;
+          }, 2000);
+        } else {
+          Swal.fire({
+            title: res.data,
+            icon: "info",
+            timer: 2000,
+            timerProgressBar: true,
+          });
+        }
+
+      });
+  });
+});
+
+
+// const buttonFn = () => {
+
+
+
+//   const productIdBtn = document.getElementsByClassName("productId");
+//   for (var i = 0; i < productIdBtn.length; i++) {
+//     productIdBtn[i].onclick = async function () {
+
+
+
+//       const cid = obtenerDatos()
+//       var pid = this.value;
+//       console.log("Editar producto: " + pid);
+//       console.log(`/api/carts/${cid}/product/${pid}`)
+//       await fetch(`/api/carts/${cid}/product/${pid}`, {
+//         method: "PUT",
+//         headers: { "Content-type": "application/json;charset=UTF-8" },
+//         body: JSON.stringify(body),
+//       })
+//         .then((res) => res.json())
+//         .then((res) => {
+//           console.log(res)
+//         });
+//     };
+//   }
+
+// };
+// buttonFn();
 
 // // Cargo nuevo producto en el front
 // socket.on("newProduct", (data) => {

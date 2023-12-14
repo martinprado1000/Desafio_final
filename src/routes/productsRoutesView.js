@@ -16,7 +16,7 @@ const userMiddleware = (req, res, next) => {
 
 // Middleware chequeo si es admin
 const isAdmin = (req, res, next) => {
-  if (req.user.rol != "admin") {
+  if (req.user.rol != "admin" && req.user.rol != "premium") {
   return res.redirect("/login");
 }
 return next();

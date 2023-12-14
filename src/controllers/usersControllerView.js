@@ -6,49 +6,37 @@ class ServicesControllerView {
     }
 
     async users(req,res){
+        const isAdmin = req.user?.rol == "admin" ? true : false;
         const data = await this.usersService.get()
-        res.render("users.handlebars", {data});
+        res.render("users.handlebars", {data, isAdmin});
     }
 
     async usersPaginate(req,res){
         const userSession = req.user?.name;
+        const isAdmin = req.user?.rol == "admin" ? true : false;
         const query = req.query
         const result = await this.usersService.getPaginate(query)
         const data = result.data;
-        res.render("users.handlebars", {data , title:"Users", userSession });
+        const rol = req.user?.rol
+        res.render("users.handlebars", {data , title:"Users", userSession, rol, isAdmin });
     }
     
     async usersPid(req,res){
         const userSession = req.user?.name;
+        const isAdmin = req.user?.rol == "admin" ? true : false;
         const id = req.params.uid
         const result = await this.usersService.getById(id)
         const data = result.data;
-        res.render("usersPid.handlebars", {data , title:"Edit user", userSession });
+        const rol = req.user?.rol
+        res.render("usersPid.handlebars", {data , title:"Edit user", userSession, rol, isAdmin });
     }
 
     async usersAdd(req,res){
         const userSession = req.user?.name;
-        res.render("usersAdd.handlebars", {title:"Add user", userSession });
+        const isAdmin = req.user?.rol == "admin" ? true : false;
+        const rol = req.user?.rol
+        res.render("usersAdd.handlebars", {title:"Add user", userSession, rol, isAdmin });
     }
-
-    // async usersEdit(req,res){
-    //     const body = req.body
-    //     const result = await this.usersService.post(body)
-    //     res.json(result)
-    // }
-
-    // async usersDelete(req,res){
-    //     const id = req.params.pid
-    //     const body = req.body
-    //     const result = await this.usersService.put(id,body)
-    //     res.json(result)
-    // }
-
-    // async userdelete(req,res){
-    //     const id = req.params.pid
-    //     const result = await this.usersService.delete(id)
-    //     res.json(result)
-    // }
 
 }
 

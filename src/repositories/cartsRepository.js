@@ -34,7 +34,6 @@ class CartsRepository {
   }
   async getByIdNotDto(id) {
     const result = await this.dao.getById(id);
-    console.log(result)
     return result
   }
 

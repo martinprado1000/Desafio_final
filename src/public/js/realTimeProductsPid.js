@@ -5,11 +5,11 @@ console.log(socket);
 const goToCart = document.getElementById("goToCart");
 const quantityInput = document.getElementById("quantity");
 const idUserInput = document.getElementById("idUser");
-const cartIdInput = document.getElementById("cartId"); 
+const cartIdInput = document.getElementById("cartId");
 // const btnSubmit = document.getElementById("submit");
 // const btnUpdate = document.getElementById("update");
 // const btnCancelUpdate = document.getElementById("cancelUpdate");
-const idProductInput = document.getElementById("idProduct"); 
+const idProductInput = document.getElementById("idProduct");
 // const titleInput = document.getElementById("title");
 // const descriptionInput = document.getElementById("description");
 // const priceInput = document.getElementById("price");
@@ -36,7 +36,7 @@ const obtenerDatos = () => {
     idProduct,
     quantity,
     idUser,
-    cartId
+    cartId,
     //title,
     // description,
     // price,
@@ -80,34 +80,52 @@ const obtenerDatos = () => {
 const addToCartBtn = document.getElementById("addToCart");
 addToCartBtn.addEventListener("click", async (e) => {
   e.preventDefault();
-  const body = obtenerDatos()
-  console.log(body)
-  await fetch(`/api/carts/${body.cartId}/product/${body.idProduct}`, {
-    method: "POST",
-    headers: { "Content-type": "application/json" },
-    body: JSON.stringify(body),
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      if (res.status == 201) {
-        Swal.fire({
-          title: res.data,
-          icon: "success", // succes , warning , info , question
-          timer: 2000,
-          timerProgressBar: true,
-        });
-        setTimeout(() => {
-          window.location.href = "http://localhost:8080/realTimeProducts";
-        }, 2000);
-      } else {
-        Swal.fire({
-          title: res.data,
-          icon: "info", // succes , warning , info , question
-          timer: 2000,
-          timerProgressBar: true,
-        });
-      }
+  const body = obtenerDatos();
+  if (!body.cartId) {
+    Swal.fire({
+      title: "Para agregar productos a un carrito debe registrarse con un correo",
+      icon: "info", // succes , warning , info , question
+      timer: 5000,
+      timerProgressBar: true,
     });
+    fetch("/api/register", {
+      method: "DELETE",
+      headers: { "Content-type": "application/json;charset=UTF-8" },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setTimeout(() => {
+          window.location.href = "http://localhost:8080/register";
+        }, 5000);
+      });
+  } else {
+    await fetch(`/api/carts/${body.cartId}/product/${body.idProduct}`, {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(body),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.status == 201) {
+          Swal.fire({
+            title: res.data,
+            icon: "success", // succes , warning , info , question
+            timer: 2000,
+            timerProgressBar: true,
+          });
+          setTimeout(() => {
+            window.location.href = "http://localhost:8080/realTimeProducts";
+          }, 2000);
+        } else {
+          Swal.fire({
+            title: res.data,
+            icon: "info", // succes , warning , info , question
+            timer: 2000,
+            timerProgressBar: true,
+          });
+        }
+      });
+  }
 });
 
 // for (var i = 0; i < addToCart.length; i++) {

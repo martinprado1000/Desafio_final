@@ -114,7 +114,7 @@ const buttonFn = () => {
             .then((res) => {
               if (res.status == 201) {
                 Swal.fire({
-                  text: res.data,
+                  title: res.data,
                   icon: "success",
                   timer: 2000,
                   timerProgressBar: true,
@@ -125,7 +125,7 @@ const buttonFn = () => {
                 }, 2000);
               } else {
                 Swal.fire({
-                  text: res.data,
+                  title: res.data,
                   icon: "info",
                   timer: 2000,
                   timerProgressBar: true,
@@ -134,7 +134,7 @@ const buttonFn = () => {
             });
         } else {
           Swal.fire({
-            text: "La operación ha sido cancelada",
+            text: "Operación cancelada",
             icon: "error",
             timer: 2000,
             timerProgressBar: true,
