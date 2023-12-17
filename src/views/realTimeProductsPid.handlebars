@@ -28,11 +28,10 @@
         >
           {{userSession}}
         </a>
-        <a href="">{{userSessionId}}</a>
-        <input id="idUser" name="idUser" value="{{userSessionId}}">
-        <input id="cartId" name="cartId" value="{{dataCartId}}">
+        <input type="hidden" id="idUser" name="idUser" value="{{userSessionId}}">
+        <input type="hidden" id="cartId" name="cartId" value="{{dataCartId}}">
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <li><a class="dropdown-item" id="perfil" name="perfil" href="#">Perfil</a></li>
+          {{!-- <li><a class="dropdown-item" id="perfil" name="perfil" href="#">Perfil</a></li> --}}
           <li><button class="dropdown-item" type="submit" id="logOut" name="logOut">Cerrar sisión</button></li>
           {{! <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#">Something else here</a></li> }}
@@ -42,6 +41,8 @@
     </div>
   </div>
 </nav>
+
+<div class="p-1 mb-2 bg-primary text-white text-center fs-5">Agregar producto al carrito</div>
 
 <form
   name="formProducts"
@@ -162,14 +163,14 @@
       Please provide a valid zip.
     </div>
     <div class="row">
-      <label for="quantity" class="form-label mt-3">Cantidad a agregar:</label>
+      <label for="quantity" class="form-label mt-3">Agregar al carrito:</label>
       <div class="col-4">
         <input
           class="form-control"
           type="number"
           id="quantity"
           name="quantity"
-          placeholder="Cantidad"
+          placeholder="Cantidad a agregar"
         />
       </div>
       <div class="col-4">

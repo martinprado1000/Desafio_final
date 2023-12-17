@@ -1,17 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
   <div class="container-fluid">
-    {{! <a class="navbar-brand text-light" href="#">Navbar</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button> }}
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
@@ -32,7 +20,7 @@
       Regístrese
     </div>
     <form
-      class="row g-3 needs-validation mx-1"
+      class="row g-3 needs-validation mx-1"  
       name="formRegister"
       id="formRegister"
       action="/api/register"
@@ -47,7 +35,7 @@
           id="name"
           name="name"
           placeholder="Ingrese su nombre"
-          {{! required }}
+          required
         />
         <div class="invalid-feedback">
           Ingrese su nombre!
@@ -61,7 +49,7 @@
           id="lastname"
           name="lastname"
           placeholder="Ingrese su apellido"
-          {{! required }}
+          required
         />
         <div class="invalid-feedback">
           Ingrese su apellido!
@@ -75,7 +63,7 @@
           id="age"
           name="age"
           placeholder="Ingrese su edad"
-          {{! required }}
+          required
         />
         <div class="invalid-feedback">
           Ingrese su edad!
@@ -92,7 +80,7 @@
             id="email"
             name="email"
             placeholder="Ingrese su email"
-            {{! required }}
+            required 
           />
           <div class="invalid-feedback">
             Ingrese su email!
@@ -107,7 +95,7 @@
           id="password"
           name="password"
           placeholder="Ingrese una contraseña"
-          {{! required }}
+          required
         />
         <div class="invalid-feedback">
           Ingrese una contraseña!
@@ -121,7 +109,7 @@
           id="passwordRepit"
           name="passwordRepit"
           placeholder="Repita la contraseña"
-          {{! required }}
+          required
         />
         <div class="invalid-feedback">
           Repita la contraseña!

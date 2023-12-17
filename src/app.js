@@ -6,6 +6,7 @@ const dotenv = require('dotenv')
 const configEnvFn = require ("./config.env/configEnv")
 const handlebars = require("express-handlebars");
 const session = require("express-session");
+const UsersService = require("./services/usersService.js")
 
 const cookieParser = require("cookie-parser"); // Requerimos cookie-parse
 const MongoStore = require("connect-mongo");
@@ -61,7 +62,7 @@ initializePassport();
 app.use(passport.initialize()); 
 app.use(passport.session());
 
-const PORT = 8080;
+const PORT = process.env.PORT || 3000
 const httpServer = app.listen(PORT, () =>
   console.log(`Servidor express corriendo en el puerto ${PORT}`)
 );
@@ -85,6 +86,9 @@ app.use("/",productsRoutesViews)
 app.use("/",cartsRoutesViews)
 app.use("/",sessionsRoutesViews)
 app.use("/",usersRouterView)
+
+// Ejecuto el chequeo de usuarios inactivos
+setInterval(UsersService.deleteInactiveUsers, 60 * 60 * 1000);
 
 //Ruta incorrecta
 app.use((req, res) => {

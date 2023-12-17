@@ -1,6 +1,5 @@
 const passport = require("passport");
 const UsersService = require("../services/usersService")
-//const usersModel = require("../models/usersModel");
 
 // requiero mis estrategias de login y registro.
 const localStrategyRegister = require("../strategies/localStrategyRegister")
@@ -20,7 +19,6 @@ const initializePassport = () => {
   });
 
   passport.deserializeUser(async (id, done) => {
-    //const user = await usersModel.findOne({ _id:id });
     const user = await this.usersService.getById(id);
     //console.log(user)
     done(null, user.data); // Le paso user.data porque al llamar al service me retorna un objeto con { status y data } 

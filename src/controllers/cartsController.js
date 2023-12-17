@@ -73,6 +73,12 @@ class CartsController {
     const result = await this.cartsService.getCartsBuy({ cid });
     res.json(result);
   }
+
+  async postCartsBuyConfirm(req,res) {
+    const cid = req.params.cid;
+    const result = await this.cartsService.postCartsBuyConfirm({ cid });
+    res.json(result);
+  }
   
 }
 

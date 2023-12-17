@@ -44,7 +44,7 @@
           </a>
           <a class="nav-link">Usuario {{rol}}</a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" id="perfil" name="perfil" href="#">Perfil</a></li>
+            {{!-- <li><a class="dropdown-item" id="perfil" name="perfil" href="#">Perfil</a></li> --}}
             <li><button
                 class="dropdown-item"
                 type="submit"
@@ -59,6 +59,8 @@
     </div>
   </div>
 </nav>
+
+<div class="p-1 mb-2 bg-primary text-white text-center fs-5">Usuarios</div>
 
 <div class="mx-2 mt-2 row">
   <div class="col-2 mt-2">
@@ -95,7 +97,7 @@
           <option name="category" id="category" value="">Todas</option>
           <option name="category" id="category" value="admin">Admin</option>
           <option name="category" id="category" value="premium">Premium</option>
-          <option name="category" id="category" value="user">Usuar</option>
+          <option name="category" id="category" value="user">User</option>
         </select>
       </div>
       <fieldset class="form-group">

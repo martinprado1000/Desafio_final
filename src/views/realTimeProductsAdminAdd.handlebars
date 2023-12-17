@@ -44,7 +44,7 @@
           </a>
           <a class="nav-link">Usuario {{rol}}</a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" id="perfil" name="perfil" href="#">Perfil</a></li>
+            {{!-- <li><a class="dropdown-item" id="perfil" name="perfil" href="#">Perfil</a></li> --}}
             <li><button
                 class="dropdown-item"
                 type="submit"
@@ -59,6 +59,8 @@
     </div>
   </div>
 </nav>
+
+<div class="p-1 mb-2 bg-primary text-white text-center fs-5">Agregar producto</div>
 
 <form
   name="formProducts"
@@ -177,7 +179,7 @@
         type="submit"
         name="submit"
         id="submit"
-      >Guardar producto</button>
+      >Crear producto</button>
       <a href="/realTimeProducts" class="btn btn-danger mt-3">Cancelar</a>
   </div>
 </form>

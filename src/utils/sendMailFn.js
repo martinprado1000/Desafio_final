@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendMailFn = async (owner , code) => {
+const sendMailDeleteProductFn = async (owner , code) => {
   const result = await transporter.sendMail({
     from: "martinprado1000@gmail.com",
     to: owner,
@@ -29,4 +29,24 @@ const sendMailFn = async (owner , code) => {
   return { status: "success", result: "mail enviado" };
 };
 
-module.exports = sendMailFn;
+const sendMailBuyProductFn = async (owner,cid) => {
+  const result = await transporter.sendMail({
+    from: "martinprado1000@gmail.com",
+    to: owner,
+    subject: "Compra de producto",
+    html: `<div>
+                <h1>Se realizó la compra del carrito con codigo: ${cid}</h1>
+            </div>`,
+    // attachments: [
+    //   {
+    //      filename: 'chems.PNG',
+    //      path: './src/chems.PNG',
+    //      cid: 'chems'
+    //   },
+    // ],
+  });
+  //console.log(result);
+  return { status: "success", result: "mail enviado" };
+};
+
+module.exports = { sendMailDeleteProductFn , sendMailBuyProductFn };

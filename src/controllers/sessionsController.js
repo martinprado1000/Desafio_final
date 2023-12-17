@@ -26,7 +26,6 @@ class SessionsController {
 
   async deleteRegister(req,res) {
     const result = await this.sessionService.deleteRegister(req);
-    console.log(result)
     res.json(result);
   }
 
@@ -45,7 +44,6 @@ class SessionsController {
       return;
     }
     let responseRecovery = await manager.recoveryPassword(data);
-    console.log(responseRecovery);
     res.json(responseRecovery);
   }
 }

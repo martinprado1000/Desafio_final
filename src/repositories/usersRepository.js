@@ -10,10 +10,10 @@ class UsersRepository {
 
   async get() {
     const result = await this.dao.get();
-    if (result == null) {
+    //if (result == null) {
       return result;
-    }
-    return result.map((user) => new UsersDTO(user));
+    //}
+    //return result.map((user) => new UsersDTO(user));
   }
 
   async getPaginate(query,options) {
@@ -30,7 +30,7 @@ class UsersRepository {
   async getById(id) {
     let result = await this.dao.getById(id);
     if (result == null) {
-      return result;  
+     return result;  
     }
     return new UsersDTO(result);
   }
@@ -45,11 +45,11 @@ class UsersRepository {
 
   async getByEmail(email) {
     const result = await this.dao.getByEmail(email);
-    // if (result == null) {
-    //   return result;
-    // }
-    return result;
-    //return new UsersDTO(result);
+    if (result == null) {
+       return result;
+     }
+    //return result;
+    return new UsersDTO(result);
   }
 
   async post(body) {

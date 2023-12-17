@@ -66,53 +66,12 @@ class UsersService {
             ? `http://localhost:8080/users/?page=${users.nextPage}`
             : null,
       };
-      //console.log(usersPaginate)
       return { status: 200, data: usersPaginate };
     } catch (e) {
       console.log(e);
       return { status: 500, data: "Error inesperado en el sistema" };
     }
   }
-
-  // async getPaginateAdmin(data) {
-  //   try {
-  //     // ?limit=2&page=2&query=fruta&sort=asc  // esto podemos recibir en la consulta
-  //     const limit = parseInt(data.limit) || 10;
-  //     const page = parseInt(data.page) || 1;
-  //     const category = data.category || "";
-  //     let sort = data.sort == "asc" ? -1 : 1 || "";
-  //     sort = { price: sort };
-  //     //const sort = parseInt(data.sort) || " ";
-  //     const options = { limit, page, category, sort };
-  //     //const users = await productModel.paginate(query,{ limit , page , sort:{price:sort} })
-  //     let query = {}; // Define un objeto vacío para la consulta
-  //     if (category) {
-  //       query.category = category; // Agrega la categoría a la consulta si se proporciona
-  //     }
-  //     const users = await this.usersRepository.getPaginate(query, options);
-  //     if (!users || users == "") {
-  //       return { status: 404, data: "Usuarios no encontrados" };
-  //     }
-  //     const payload = users.docs
-  //     // paguinate me retorna un objeto que contiene toda la info de paguinacion y un array llamado docs que ahi se encuentran los datos solicitados.
-  //     const usersPaginate = {
-  //       status: "success",
-  //       payload,
-  //       totalPages: users.totalPages,
-  //       prevPage: users.prevPage,
-  //       nextPage: users.nextPage,
-  //       page: users.page,
-  //       hasPrevPage: users.hasPrevPage,
-  //       hasNextPage: users.hasNextPage,
-  //       prevLink: users.hasPrevPage == true ? `http://localhost:8080/realTimeUsersAdmin/?page=${users.prevPage}` : null,
-  //       nextLink: users.hasNextPage == true ? `http://localhost:8080/realTimeUsersAdmin/?page=${users.nextPage}` : null,
-  //     };
-  //     return { status: 200, data: usersPaginate };
-  //   } catch (e) {
-  //     console.log(e);
-  //     return { status: 500, result: "Error inesperado en el sistema" };
-  //   }
-  // }
 
   async getById(id) {
     if (!isValid(id)) {
@@ -147,27 +106,9 @@ class UsersService {
   }
 
   async post(body) {
-    const { name, lastname, age, email, rol, password, passwordRepit } = body;
+    const { email, password } = body;
     try {
-      // if (
-      //   !name ||
-      //   !lastname ||
-      //   !age ||
-      //   !email ||
-      //   //!rol ||
-      //   !password ||
-      //   !passwordRepit
-      // ) {
-      //   return { status: 404, data: "Campos incompletos" };
-      // }
-      // if (password != passwordRepit || password == "") {
-      //   return { status: 404, data: "Contraseñas incorrectassss" };
-      // }
-      // const userFound = await this.usersRepository.getByEmail(email);
-      // if (userFound != null) {
-      //   return { status: 404, data: "El email de usuario ya existe" };
-      // }
-      body.password = hashPassword(body.password);
+      body.password = hashPassword(password);
       await this.usersRepository.post(body); // Creo el usuario
       await this.cartsRepository.post(email); // Creo el carrito default
       return { status: 201, data: "Usuario ingresado correctamente" };
@@ -227,8 +168,58 @@ class UsersService {
     }
   }
 
+  static deleteInactiveUsers = async () => {
+    try {
+      const usersService = new UsersService();
+      const users = await usersService.get();
+
+      const fechaActual = new Date();
+      const fecha2DiasAntes = new Date();
+      const deletedUsers = users.data.map( async (user) => {
+        if(user.rol=="admin") return; // Evito eliminar usuarios admin
+        const updatedAt = user.updatedAt
+        // Resta 2 días a la fecha actual
+        fecha2DiasAntes.setDate(fechaActual.getDate() - 2);
+        //fecha60DiasAntes.setMinutes(fechaActual.getMinutes() - 1); // Minutos
+        //Compara si la fecha updatedAt está dentro de los últimos 2 días
+        if (updatedAt >= fecha2DiasAntes && updatedAt <= fechaActual) {
+          console.log(`Usuario: ${user.email}, NO superar los 2 días de inactividad`);
+          return
+        } else {
+          const deletedUser = await usersService.delete(user._id)
+          console.log(`Usuario ${user.email} eliminado por superar los 2 días de inactividad. id: ${user._id}` );
+          return
+        }
+      });
+      // if (result.deletedCount == 0) {
+      //   return { status: 404, data: "Ningun usuario inactivo" };
+      // }
+      // return { status: 201, data: "Usuario eliminado correctamente" };
+    } catch (e) {
+      console.log(e);
+      return { status: 500, data: "Error inesperado en el sistema" };
+    }
+  };
+
   async userCreateRegister(req, username, password) {
     const { name, lastname, age, passwordRepit } = req.body;
+    //IMPORTANTE: username es el email
+
+    if (!name || !lastname || !age || !password || !passwordRepit) {
+      console.log(`Campos incompletos`);
+      return { message: `Campos incompletos` };
+    }
+
+    function validateEmail(correo) {
+      // Expresión regular para validar el formato de un correo electrónico
+      const patronCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return patronCorreo.test(correo);
+    }
+    if (!validateEmail(username)) {
+      console.log(`Formato de email inválido`);
+      return { message: `Formato de email inválido` };
+    }
+
     //username es el email
     if (password != passwordRepit || password == "") {
       return { message: `Contraseñas incorrectas` };
@@ -254,17 +245,16 @@ class UsersService {
 
   async userLogin(username, password) {
     try {
-      let user = await this.getByEmail(username);
-      if (user.status !== 200) {
+      let user = await this.usersRepository.getByEmail(username);
+      if (!user) {
         return { message: `Usuario o password incorrecto` };
       }
-      if (!isValidPassword(password, user.data.password)) {
-        // Comparo la password, esto me retorna true o false.
-        return { message: `Usuario o password incorrecto` };
+      if (isValidPassword(user.password, password)) {
+        return { message: `Usuario o password incorrectooooooo` };
       }
-      console.log(`${user.data.email} a iniciado sesion`);
-      delete user.data.password; // Borro la contraseña para que no quede en el backend
-      return user.data;
+      console.log(`${user.email} a iniciado sesion`);
+      delete user.password; // Borro la contraseña
+      return user;
     } catch (e) {
       return { message: `Error inesperado al loguear el usuario. ${e}` };
     }

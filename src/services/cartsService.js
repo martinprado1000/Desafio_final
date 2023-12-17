@@ -1,6 +1,8 @@
 const CartsRepository = require("../repositories/cartsRepository");
 const ProductsRepository = require("../repositories/productsRepository");
+
 const mongoose = require("mongoose");
+const { sendMailBuyProductFn } = require("../utils/sendMailFn")
 
 // Funcion para validar si los id son validos para mongo
 const isValid = (id) => {
@@ -104,7 +106,7 @@ class CartsService {
       if (cartFound != null) {
         return { status: 404, data: "El email ya existe" };
       }
-      await this.CartsRepository.put(id, body);
+      const result = await this.CartsRepository.put(id, body);
       if (!result) {
         return { status: 404, data: "Carrito inexistente" };
       }
@@ -124,7 +126,7 @@ class CartsService {
       if (result.deletedCount == 0) {
         return { status: 404, data: "Carrito inexistente" };
       }
-      return { status: 201, data: "Carrito eliminado correctamente" };
+      return { status: 204, data: "Carrito eliminado correctamente" };
     } catch (e) {
       console.log(e);
       return { status: 500, data: "Error inesperado en el sistema" };
@@ -307,6 +309,7 @@ class CartsService {
   }
 
   async deleteProductFromCart({ cid, pid }) {
+    console.log({ cid, pid })
     if (!isValid(cid) || !isValid(pid)) {
       return { status: 404, data: "ID invalido" };
     }
@@ -319,6 +322,7 @@ class CartsService {
         };
       }
       const productFound = await this.ProductsRepository.getById(pid);
+      //console.log(productFound)
       if (!productFound) {
         return {
           status: 404,
@@ -335,12 +339,12 @@ class CartsService {
           data: "El producto no existe en el carrito",
         };
       }
-
+      console.log(productFoundInCart)
       // Actualizo el stock de los productos
       const updatedStock = productFound.stock + productFoundInCart.quantity;
       this.ProductsRepository.put(pid, { stock: updatedStock });
       cartFound.products = cartFound.products.filter((p) => p.product.id !== pid);
-
+      
       await this.CartsRepository.save(cartFound);
 
       return {
@@ -365,45 +369,41 @@ class CartsService {
           data: "Carrito inexistente",
         };
       }
-      //console.log(cartFound)
-      // let producsPrice = 0
-      // let price = 0;
-      // let totalPrice = 0;
-      // let result = cartFound.products.map((p) => {
-      //   if(p.quantity > 1){
-      //     console.log("MAYOR a 1")
-      //     console.log(p.quantity)
-      //     console.log(p.product.price)
-      //     producsPrice = p.product.price * p.quantity
-      //     totalPrice = price + producsPrice 
-      //     console.log(totalPrice)
-      //   } else {
-      //     console.log("menor a 1")
-      //     producsPrice = p.product.price
-      //     totalPrice = price + producsPrice
-      //   }
-      //   return totalPrice
-      // });
-      // console.log(result[0])
-      console.log(cartFound)
       let producsPrice = 0;
       let totalPrice = 0;
       let result = cartFound.products.reduce((accumulator, p) => {
-        if (p.quantity > 1) {
-          producsPrice = p.product.price * p.quantity;
-        } else {
-          producsPrice = p.product.price;
-        }
+        producsPrice = p.product.price * p.quantity;
         totalPrice = accumulator + producsPrice;
         return totalPrice;
       }, 0);
+      return { status: 200, data: `Abonar por el total de la compra: $${result}` };
+    } catch (e) {
+      return { status: 500, data: "Error inesperado en el sistema" };
+    }
+  }
 
-      console.log(result);
-
-      // if (!productFound) {
-      //   return { status: 404, data: "Producto no encontrado en el carrito" };
-      // }
-      // return { status: 200, data: productFound };
+  async postCartsBuyConfirm({ cid }) {
+    if (!isValid(cid)) {
+      return { status: 404, data: "ID invalido" };
+    }
+    try {
+      const cartFound = await this.CartsRepository.getById(cid);
+      if (!cartFound) {
+        return {
+          status: 404,
+          data: "Carrito inexistente",
+        };
+      }
+      const email = cartFound.email
+      cartFound.products = [];
+      delete cartFound.email 
+      const deleteCart = await this.put(cid,cartFound)
+      console.log(deleteCart)
+      if (deleteCart.status == 201 ) {
+        sendMailBuyProductFn(email,cid)
+        return { status: 204, data: `Compra realizada satifactoriamente` };
+      }
+      return deleteCart;
     } catch (e) {
       return { status: 500, data: "Error inesperado en el sistema" };
     }

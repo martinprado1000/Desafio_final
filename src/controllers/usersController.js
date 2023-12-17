@@ -41,6 +41,12 @@ class ServicesController {
         res.json(result)
     }
 
+    async deleteInactiveUsers(req,res){
+        const id = req.params.uid
+        const result = await this.usersService.deleteInactiveUsers(id)
+        res.json(result)
+    }
+
 }
 
 module.exports = ServicesController;

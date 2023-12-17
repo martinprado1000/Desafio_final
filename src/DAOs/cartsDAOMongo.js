@@ -14,10 +14,18 @@ class CartsDAOMongo {
     }
   }
 
+  async getLean() {
+    try {
+      return await this.cartsModel.find().populate("products.product").lean();
+    } catch (e) {
+      console.log(e)
+      throw new Error("Error inesperado al realizar la consulta get");
+    }
+  }
+
   async getById(id) {
     try {
       const result = await this.cartsModel.findById(id).populate("products.product");
-      // lean(); retorna todo el objeto y los subobjetos en objetos notivos de js
       return result
     } catch (e) {
       console.log(e)
@@ -28,7 +36,7 @@ class CartsDAOMongo {
   async getByIdLean(id) {
     try {
       const result = await this.cartsModel.findById(id).populate("products.product").lean();
-      // lean(); retorna todo el objeto y los subobjetos en objetos notivos de js
+      // lean(); retorna todo el objeto y los subobjetos en objetos nativos de js
       return result
     } catch (e) {
       console.log(e)
@@ -45,7 +53,6 @@ class CartsDAOMongo {
   }
 
   async post(body) {
-    console.log(body)
     try {
       return await this.cartsModel.create({email:body});
     } catch (e) {

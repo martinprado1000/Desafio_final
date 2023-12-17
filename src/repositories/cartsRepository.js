@@ -17,6 +17,11 @@ class CartsRepository {
     return result.map((cart) => new CartsDTO(cart));
   }
 
+  async getLean() {
+    const result = await this.dao.getLean();
+      return result;
+  }
+
   async getById(id) {
     let result = await this.dao.getById(id);
     if (result == null) {

@@ -35,7 +35,8 @@ class ServicesControllerView {
         const userSession = req.user?.name;
         const isAdmin = req.user?.rol == "admin" ? true : false;
         const rol = req.user?.rol
-        res.render("usersAdd.handlebars", {title:"Add user", userSession, rol, isAdmin });
+        const error = req.flash('error')[0]
+        res.render("usersAdd.handlebars", {title:"Add user", userSession, rol, isAdmin, error, hasError:error!==undefined });
     }
 
 }

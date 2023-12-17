@@ -1,6 +1,3 @@
-const socket = io();
-console.log(socket);
-
 const submitFormResetPassword = document.getElementById("formResetPassword");
 const btnNewPassword = document.getElementById("btnNewPassword")
 const emailResetPassword = document.getElementById("emailResetPassword");

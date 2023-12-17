@@ -7,7 +7,8 @@ class MongoSingleton {
 
   constructor(settings) {
     switch (settings.persistence) {
-      case "MONGO_ATLAS_DEV" || "MONGO_ATLAS_PROD":
+      case "MONGO_ATLAS_PROD":
+      case "MONGO_ATLAS_DEV":
         CONNECTION_MONGO = `mongodb+srv://${settings.db_user}:${settings.db_password}@${settings.db_host}/${settings.db_name}?retryWrites=true&w=majority`;
         break;
       case "MONGO_LOCAL":

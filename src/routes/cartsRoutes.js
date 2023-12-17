@@ -19,6 +19,7 @@ cartRouter.post("/carts/:cid/product/:pid",cartsController.postProductFromCart.b
 cartRouter.put("/carts/:cid/product/:pid",cartsController.putProductFromCart.bind(cartsController))
 cartRouter.delete("/carts/:cid/product/:pid",cartsController.deleteProductFromCart.bind(cartsController))
 cartRouter.get("/cartsBuy/:cid",cartsController.getCartsBuy.bind(cartsController))
+cartRouter.post("/cartsBuyConfirm/:cid",cartsController.postCartsBuyConfirm.bind(cartsController))
 
 module.exports = cartRouter
 

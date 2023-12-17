@@ -2,14 +2,18 @@ const { Router } = require("express");
 const passport = require("passport")
 
 const SessionsController = require("../controllers/sessionsController")
+const UsersControllerView = require("../controllers/usersControllerView")
 
 const sessionRouter = new Router() 
 
 const sessionsController = new SessionsController();
-//productRouterViews.get("/realTimeProducts",productsControllerViews.realTimeProducts.bind(productsControllerViews))
+const usersControllerView = new UsersControllerView();
+
 sessionRouter.get("/", sessionsController.getRegister.bind(sessionsController));
 
 sessionRouter.post("/register", passport.authenticate('register',{failureRedirect:'/register' , failureFlash: true}), sessionsController.postRegister.bind(sessionsController)); // Inyectamos passport como un middleware. // registerPost 
+
+sessionRouter.post("/registerForAdmin", passport.authenticate('register',{failureRedirect:'/usersAdd' , failureFlash: true}), usersControllerView.usersPaginate.bind(usersControllerView)); // Inyectamos passport como un middleware. // registerPost 
 
 sessionRouter.post("/login", passport.authenticate('login',{failureRedirect:'/login' , failureFlash: true}), sessionsController.postLogin.bind(sessionsController));  // registerPost 
 

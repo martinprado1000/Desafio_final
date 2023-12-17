@@ -1,17 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
   <div class="container-fluid">
-    {{! <a class="navbar-brand text-light" href="#">Navbar</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button> }}
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
@@ -26,10 +14,6 @@
             <a class="nav-link text-light" href="/users">Usuarios</a>
           </li>
         {{/if}}
-
-        {{! <li class="nav-item">
-          <a class="nav-link disabled text-light" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li> }}
       </ul>
       <form action="">
         <li class="nav-item dropdown d-flex me-2">
@@ -44,15 +28,13 @@
           </a>
           <a class="nav-link">Usuario {{rol}}</a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" id="perfil" name="perfil" href="#">Perfil</a></li>
+            {{!-- <li><a class="dropdown-item" id="perfil" name="perfil" href="#">Perfil</a></li> --}}
             <li><button
                 class="dropdown-item"
                 type="submit"
                 id="logOut"
                 name="logOut"
               >Cerrar sisión</button></li>
-            {{! <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li> }}
           </ul>
         </li>
       </form>
@@ -60,6 +42,7 @@
   </div>
 </nav>
 
+<div class="p-1 mb-2 bg-primary text-white text-center fs-5">Productos</div>
 <div class="mx-2 mt-2 row">
   <div class="col-2 mt-2">
     <ul class="pagination pagination-sm">
@@ -195,11 +178,6 @@
                 value={{this.id}}
                 class="delete btn btn-danger btn-sm"
               >Eliminar</button></td>
-            {{!-- <td><button
-                value={{this.id}}
-                class="addCart btn btn-info sm btn-sm"
-              >Agregar al carrito</button>
-            </td> --}}
           </tr>
         {{/each}}
       </tbody>
