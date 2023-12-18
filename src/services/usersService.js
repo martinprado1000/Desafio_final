@@ -106,6 +106,44 @@ class UsersService {
   }
 
   async post(body) {
+    const { email, name, lastname, age, password, rol, passwordRepit } = body;
+    //IMPORTANTE: username es el email
+
+    if ( !email || !name || !lastname || !age || !password || !passwordRepit || !rol) {
+      console.log(`Campos incompletos`);
+      return { status: 404, data:`Campos incompletos` };
+    }
+
+    function validateEmail(correo) {
+      // Expresión regular para validar el formato de un correo electrónico
+      const patronCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return patronCorreo.test(correo);
+    }
+    if (!validateEmail(email)) {
+      console.log(`Formato de email inválido`);
+      return { status: 404, data:`Formato de email inválido` };
+    }
+
+    //username es el email
+    if (password != passwordRepit || password == "") {
+      return { status: 404, data: `Contraseñas incorrectas` };
+    }
+    try {
+      let exist = await this.getByEmail(email); //username es el email
+      if (exist.status == 200) {
+        return { status: 404, data: `El usuario ${email} ya existe` };
+      }
+      let passwordHashed = hashPassword(password); // Llamamos a la función para hashear la password
+      await this.usersRepository.post({ ...body, password: passwordHashed });// Creo el usuario
+      await this.cartsRepository.post(email); // Creo el carrito default
+      return { status: 201, data: "Usuario ingresado correctamente" };
+    } catch (e) {
+      console.log(e);
+      return { status: 500, data: "Error inesperado en el sistema" };
+    }
+  }
+
+  async postRegister(body) {
     const { email, password } = body;
     try {
       body.password = hashPassword(password);
@@ -231,7 +269,7 @@ class UsersService {
       }
       const body = req.body;
       body.password = hashPassword(body.password); // Llamamos a la funcion para hashear la password
-      let user = await this.post(body);
+      let user = await this.postRegister(body);
       if (user.status != 201) {
         return { message: user.data };
       }

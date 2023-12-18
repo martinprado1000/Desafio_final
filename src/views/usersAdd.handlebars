@@ -1,17 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
   <div class="container-fluid">
-    {{! <a class="navbar-brand text-light" href="#">Navbar</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button> }}
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
@@ -26,10 +14,6 @@
             <a class="nav-link text-light" href="/users">Usuarios</a>
           </li>
         {{/if}}
-
-        {{! <li class="nav-item">
-          <a class="nav-link disabled text-light" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li> }}
       </ul>
       <form action=""
         {{!-- action="/api/register"
@@ -91,8 +75,8 @@
         placeholder="Ingrese un nombre"
         required
       />
-      <div class="valid-feedback">
-        Looks good!
+      <div class="invalid-feedback">
+        Ingrese un nombre
       </div>
     </div>
     <div class="col-md">
@@ -105,8 +89,8 @@
         placeholder="Ingrese una apellido"
         required
       />
-      <div class="valid-feedback">
-        Looks good!
+      <div class="invalid-feedback">
+        Ingrese un aplellido
       </div>
     </div>
     <div class="col-md">
@@ -117,9 +101,10 @@
         class="form-control"
         id="email"
         placeholder="Ingrese un email"
+        required
       />
-      <div class="valid-feedback">
-        Looks good!
+      <div class="invalid-feedback">
+         Ingrese un email
       </div>
     </div>
     <div class="col-md">
@@ -133,7 +118,7 @@
         required
       />
       <div class="invalid-feedback">
-        Please provide a valid city.
+        Ingrese la edad
       </div>
     </div>
     <div class="col-md">
@@ -152,7 +137,7 @@
         <option value="user">User</option>
       </select>
       <div class="invalid-feedback">
-        Please provide a valid city.
+        Ingrese el rol de usuario
       </div>
     </div>
     {{!-- <div class="col-md">
@@ -179,7 +164,7 @@
       id="password"
       name="password"
       placeholder="Ingrese una contraseña"
-      {{! required }}
+      required
     />
     <div class="invalid-feedback">
       Ingrese una contraseña!
@@ -192,7 +177,7 @@
       id="passwordRepit"
       name="passwordRepit"
       placeholder="Repita la contraseña"
-      {{! required }}
+      required
     />
     <div class="invalid-feedback">
       Repita la contraseña!

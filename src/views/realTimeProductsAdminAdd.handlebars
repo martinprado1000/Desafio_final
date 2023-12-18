@@ -44,7 +44,7 @@
           </a>
           <a class="nav-link">Usuario {{rol}}</a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            {{!-- <li><a class="dropdown-item" id="perfil" name="perfil" href="#">Perfil</a></li> --}}
+            <li><a class="dropdown-item" id="perfil" name="perfil" href="#">Perfil</a></li>
             <li><button
                 class="dropdown-item"
                 type="submit"
@@ -126,8 +126,10 @@
         Ingrese un código de producto.
       </div>
     </div>
-    <div class="col-md">
-      <label for="category" class="form-label mt-3">Categoria</label>
+  </div>
+  <div class="col-6">
+        <div class="col-md">
+      <label for="category" class="form-label">Categoria</label>
       <select
         name="category"
         type="text"
@@ -159,12 +161,10 @@
         Ingrese la cantidad.
       </div>
     </div>
-  </div>
-  <div class="col-6">
-      <label for="thumbnail" class="form-label">Imagenes (Campo no obligatorio)</label>
+      {{!-- <label for="thumbnail" class="form-label">Imagenes (Campo no obligatorio)</label> --}}
       <input
         name="thumbnail"
-        type="file"
+        type="hidden"
         class="form-control"
         id="thumbnail"
         placeholder="Ingrese URL de las imagenes"

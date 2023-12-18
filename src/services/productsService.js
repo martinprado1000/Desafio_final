@@ -2,7 +2,7 @@ const ProductsRepository = require("../repositories/productsRepository");
 const UsersRepository = require("../repositories/usersRepository");
 const CartsRepository = require("../repositories/cartsRepository");
 const CartsService = require("../services/cartsService");
-const sendMailDeleteProductFn = require("../utils/sendMailFn")
+const {sendMailDeleteProductFn} = require("../utils/sendMailFn")
 const mongoose = require("mongoose");
 
 // Funcion para validar si los id son validos para mongo
@@ -71,46 +71,6 @@ class ProductsService {
     }
   }
 
-  // async getPaginateAdmin(data) {
-  //   try {
-  //     // ?limit=2&page=2&query=fruta&sort=asc  // esto podemos recibir en la consulta
-  //     const limit = parseInt(data.limit) || 10;
-  //     const page = parseInt(data.page) || 1;
-  //     const category = data.category || "";
-  //     let sort = data.sort == "asc" ? -1 : 1 || "";
-  //     sort = { price: sort };
-  //     //const sort = parseInt(data.sort) || " ";
-  //     const options = { limit, page, category, sort };
-  //     //const products = await productModel.paginate(query,{ limit , page , sort:{price:sort} })
-  //     let query = {}; // Define un objeto vacío para la consulta
-  //     if (category) {
-  //       query.category = category; // Agrega la categoría a la consulta si se proporciona
-  //     }
-  //     const products = await this.ProductsRepository.getPaginate(query, options);
-  //     if (!products || products == "") {
-  //       return { status: 404, data: "Productos no encontrados" };
-  //     }
-  //     const payload = products.docs
-  //     // paguinate me retorna un objeto que contiene toda la info de paguinacion y un array llamado docs que ahi se encuentran los datos solicitados.
-  //     const productsPaginate = {
-  //       status: "success",
-  //       payload,
-  //       totalPages: products.totalPages,
-  //       prevPage: products.prevPage,
-  //       nextPage: products.nextPage,
-  //       page: products.page,
-  //       hasPrevPage: products.hasPrevPage,
-  //       hasNextPage: products.hasNextPage,
-  //       prevLink: products.hasPrevPage == true ? `http://localhost:8080/realTimeProductsAdmin/?page=${products.prevPage}` : null,
-  //       nextLink: products.hasNextPage == true ? `http://localhost:8080/realTimeProductsAdmin/?page=${products.nextPage}` : null,
-  //     };
-  //     return { status: 200, data: productsPaginate };
-  //   } catch (e) {
-  //     console.log(e);
-  //     return { status: 500, result: "Error inesperado en el sistema" };
-  //   }
-  // }
-
   async getById(id) {
     if (!isValid(id)) {
       return { status: 404, data: "ID de producto invalido" };
@@ -144,7 +104,7 @@ class ProductsService {
   }
 
   async post(body) {
-    const { title, description, price, thumbnail, code, stock, category } =
+    const { title, description, price, code, stock, category } =
       body;
     try {
       if (!title || !description || !price || !code || !stock || !category) {
@@ -212,7 +172,7 @@ class ProductsService {
       // Obtengo el dueño del producto para enviar correo que se elimino su producto en caso de ser premium.
       const user = await this.UsersRepository.getByEmail(product.data.owner)
       if(user.rol == "premium"){ // Si el dueño del producto es premium le envio un correo
-        const result = sendMailFn(user.email , product.data.code)
+        const result = sendMailDeleteProductFn(user.email , product.data.code)
         //console.log(result)
       }
 

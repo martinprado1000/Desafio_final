@@ -43,12 +43,12 @@ const obtenerDatos = () => {
 
 
 
+
 submitForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const body = obtenerDatos();
   console.log(body)
     await fetch(`/api/users`, {
-    //await fetch(`/api/register`, {
     method: "POST",
     headers: { "Content-type": "application/json" },
     body: JSON.stringify(body),
@@ -69,23 +69,23 @@ submitForm.addEventListener("submit", async (e) => {
         Swal.fire({
           title: res.data,
           icon: "error",
-          timer: 3000,
+          timer: 2000,
           timerProgressBar: true,
         });
       }
     });
 });
 
-// (function () {
-//   var forms = document.querySelectorAll('.needs-validation')
-//   Array.prototype.slice.call(forms)
-//     .forEach(function (form) {
-//       form.addEventListener('submit', function (event) {
-//         if (!form.checkValidity()) {
-//           event.preventDefault()
-//           event.stopPropagation()
-//         }
-//         form.classList.add('was-validated')
-//       }, false)
-//     })
-// })()
+(function () {
+  var forms = document.querySelectorAll('.needs-validation')
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
