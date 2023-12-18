@@ -48,7 +48,7 @@ buyBtn.addEventListener("click", async function (event) {
                     timerProgressBar: true,
                   });
                   setTimeout(() => {
-                    window.location.href = "http://localhost:8080/carts";
+                    window.location.href = "/carts";
                   }, 2000);
                 } else {
                   Swal.fire({
@@ -100,7 +100,7 @@ updateButton.forEach((button) => {
             timerProgressBar: true,
           });
           setTimeout(() => {
-            window.location.href = `http://localhost:8080/carts/${cid}`;
+            window.location.href = `/carts/${cid}`;
           }, 2000);
         } else {
           Swal.fire({
@@ -141,7 +141,7 @@ deleteButton.forEach((button) => {
             timerProgressBar: true,
           });
           setTimeout(() => {
-            window.location.href = `http://localhost:8080/carts/${cid}`;
+            window.location.href = `/carts/${cid}`;
           }, 2000);
         } else {
           Swal.fire({

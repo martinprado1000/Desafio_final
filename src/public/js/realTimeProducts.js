@@ -8,7 +8,7 @@ const buttonFn = () => {
     viewProductBtn[i].onclick = async function () {
       var pid = this.value;
       console.log("Ver producto: " + pid);
-      window.location.href = `http://localhost:8080/realTimeProducts/${pid}`;
+      window.location.href = `/realTimeProducts/${pid}`;
     };
   }
 };

@@ -22,7 +22,7 @@ logOut.addEventListener("click", async (e) => {
               icon: "success",
             });
             setTimeout(() => {
-              window.location.href = "http://localhost:8080/login";
+              window.location.href = "/login";
             }, 1500);
           } else {
             Swal.fire({

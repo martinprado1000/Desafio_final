@@ -14,7 +14,7 @@ class MongoSingleton {
       case "MONGO_LOCAL":
         CONNECTION_MONGO = `mongodb://${settings.db_host}/${settings.db_name}`;
         break;
-    }
+    } 
     //const CONNECTION_MONGO = `mongodb+srv://martinprado1000:petete2000@cluster0.kbl1ng2.mongodb.net/basePlantilla?retryWrites=true&w=majority`
     mongoose.connect(CONNECTION_MONGO, {
       // Le indico a mongoose se conecte a la siguiente direccion:  a la variable uri en este caso.

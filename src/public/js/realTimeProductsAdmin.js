@@ -8,7 +8,7 @@ const buttonFn = () => {
     editBtn[i].onclick = async function () {
       var pid = this.value;
       console.log("Editar producto: " + pid);
-      window.location.href = `http://localhost:8080/realTimeProductsAdmin/${pid}`;
+      window.location.href = `/realTimeProductsAdmin/${pid}`;
     };
   }
 
@@ -44,7 +44,7 @@ const buttonFn = () => {
                 });
                 setTimeout(() => {
                   window.location.href =
-                    "http://localhost:8080/realTimeProducts";
+                    "/realTimeProducts";
                 }, 2000);
               } else {
                 Swal.fire({

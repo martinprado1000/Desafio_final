@@ -41,7 +41,7 @@ addToCartBtn.addEventListener("click", async (e) => {
       .then((res) => res.json())
       .then((res) => {
         setTimeout(() => {
-          window.location.href = "http://localhost:8080/register";
+          window.location.href = "/register";
         }, 5000);
       });
   } else {
@@ -60,7 +60,7 @@ addToCartBtn.addEventListener("click", async (e) => {
             timerProgressBar: true,
           });
           setTimeout(() => {
-            window.location.href = "http://localhost:8080/realTimeProducts";
+            window.location.href = "/realTimeProducts";
           }, 2000);
         } else {
           Swal.fire({

@@ -63,7 +63,7 @@ submitForm.addEventListener("submit", async (e) => {
           timerProgressBar: true,
         });
         setTimeout(() => {
-          window.location.href = "http://localhost:8080/users";
+          window.location.href = "/users";
         }, 1500);
       } else {
         Swal.fire({

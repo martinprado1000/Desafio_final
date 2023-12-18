@@ -40,64 +40,14 @@ const obtenerDatos = () => {
   return product;
 };
 
-//goToCart.addEventListener("click", async (e) => {
-  //console.log("holaaaa")
-  // await fetch("/api/register", {
-  //   method: "DELETE",
-  //   headers: { "Content-type": "application/json;charset=UTF-8" },
-  // })
-  //   .then((res) => JSON.stringify(res))
-  //   .then((res) => {
-  //     console.log("se destruyo la sesion");
-  //     window.location.href = "http://localhost:8080/login";
-  //   });
-// });
-
 //Editar producto
 const buttonFn = () => {
-  // ---- Editar producto --------
-  // const editBtn = document.getElementsByClassName("edit");
-  // for (var i = 0; i < editBtn.length; i++) {
-  //   editBtn[i].onclick = async function () {
-  //     var editProduct = this.value;
-  //     btnSubmit.disabled = true;
-  //     btnUpdate.disabled = false;
-  //     btnCancelUpdate.disabled = false;
-  //     codeInput.disabled = true;
-  //     console.log("Editar producto: " + editProduct);
-  //     socket.emit("getProductById", JSON.stringify(editProduct));
-  //     socket.on("getProductById", async (res) => {
-  //       const getId = JSON.parse(res);
-  //       const data = getId.data;
-  //       idInput.value = data._id;
-  //       titleInput.value = data.title;
-  //       descriptionInput.value = data.description;
-  //       priceInput.value = data.price;
-  //       codeInput.value = data.code;
-  //       categoryInput.value = data.category;
-  //       stockInput.value = data.stock;
-  //       thumbnailInput.value = data.thumbnail;
-  //     });
-  //   };
-  // }
+
   const editBtn = document.getElementsByClassName("edit");
   for (var i = 0; i < editBtn.length; i++) {
     editBtn[i].onclick = async function () {
       var editProduct = this.value;
       console.log("Editar producto: " + editProduct);
-      //socket.emit("getProductById", JSON.stringify(editProduct));
-      // socket.on("getProductById", async (res) => {
-      //   const getId = JSON.parse(res);
-      //   const data = getId.data;
-      //   idInput.value = data._id;
-      //   titleInput.value = data.title;
-      //   descriptionInput.value = data.description;
-      //   priceInput.value = data.price;
-      //   codeInput.value = data.code;
-      //   categoryInput.value = data.category;
-      //   stockInput.value = data.stock;
-      //   thumbnailInput.value = data.thumbnail;
-      // });
     };
   }
 

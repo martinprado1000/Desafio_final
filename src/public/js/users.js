@@ -7,7 +7,7 @@ const buttonFn = () => {
     editBtn[i].onclick = async function () {
       var pid = this.value;
       console.log("Editar usuario: " + pid);
-      window.location.href = `http://localhost:8080/users/${pid}`;
+      window.location.href = `/users/${pid}`;
     };
   }
 
@@ -43,7 +43,7 @@ const buttonFn = () => {
                 });
                 setTimeout(() => {
                   window.location.href =
-                    "http://localhost:8080/users";
+                    "/users";
                 }, 2000);
               } else {
                 Swal.fire({

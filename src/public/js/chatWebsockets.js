@@ -44,7 +44,7 @@ socket.on("joinUser", (newUser) => {
 
 // Redirecciono al chat al usuario recien logueado.
 socket.on("redirect", (newUser) => {
-  window.location.href = "http://localhost:8080/chat.handlebars/messages";
+  window.location.href = "/chat.handlebars/messages";
 //   var obj = qs.parse('a=c');
 //   assert.deepEqual(obj, { a: 'c' });
 });

@@ -56,7 +56,7 @@ btnUpdate.addEventListener("click", async (e) => {
           timerProgressBar: true,
         });
         setTimeout(() => {
-          window.location.href = "http://localhost:8080/realTimeProducts";
+          window.location.href = "/realTimeProducts";
         }, 2000);
       } else {
         Swal.fire({
