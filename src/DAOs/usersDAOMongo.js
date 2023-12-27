@@ -29,6 +29,14 @@ class UsersDAOMongo {
         }
       }
 
+      async getByUsername(username) {
+        try {
+          return await this.usersModel.findOne({username:username});
+        } catch (e) {
+          throw new Error("Error inesperado al realizar la consulta getById");
+        }
+      }
+
       async getPaginate(query,options) {
         try {
           return await this.usersModel.paginate(query,options);

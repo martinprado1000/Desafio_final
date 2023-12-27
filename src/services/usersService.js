@@ -109,9 +109,17 @@ class UsersService {
     const { email, name, lastname, age, password, rol, passwordRepit } = body;
     //IMPORTANTE: username es el email
 
-    if ( !email || !name || !lastname || !age || !password || !passwordRepit || !rol) {
+    if (
+      !email ||
+      !name ||
+      !lastname ||
+      !age ||
+      !password ||
+      !passwordRepit ||
+      !rol
+    ) {
       console.log(`Campos incompletos`);
-      return { status: 404, data:`Campos incompletos` };
+      return { status: 404, data: `Campos incompletos` };
     }
 
     function validateEmail(correo) {
@@ -121,7 +129,7 @@ class UsersService {
     }
     if (!validateEmail(email)) {
       console.log(`Formato de email inválido`);
-      return { status: 404, data:`Formato de email inválido` };
+      return { status: 404, data: `Formato de email inválido` };
     }
 
     //username es el email
@@ -134,7 +142,7 @@ class UsersService {
         return { status: 404, data: `El usuario ${email} ya existe` };
       }
       let passwordHashed = hashPassword(password); // Llamamos a la función para hashear la password
-      await this.usersRepository.post({ ...body, password: passwordHashed });// Creo el usuario
+      await this.usersRepository.post({ ...body, password: passwordHashed }); // Creo el usuario
       await this.cartsRepository.post(email); // Creo el carrito default
       return { status: 201, data: "Usuario ingresado correctamente" };
     } catch (e) {
@@ -192,14 +200,16 @@ class UsersService {
       return { status: 404, data: "ID de usuario invalido" };
     }
     if (id == "658c5e0cd88757412d0532a5") {
-      return { status: 404, data: "No se puede eliminar este usuario, usuario SuperAdmin" };
+      return {
+        status: 404,
+        data: "No se puede eliminar este usuario, usuario SuperAdmin",
+      };
     }
     try {
       if (!id) {
         return { status: 400, data: "Debe enviar un ID valido" };
       }
       const result = await this.usersRepository.delete(id);
-      console.log(result)
       if (result.deletedCount == 0) {
         return { status: 404, data: "Usuario no encontrado" };
       }
@@ -214,24 +224,28 @@ class UsersService {
     try {
       const usersService = new UsersService();
       const users = await usersService.get();
-      console.log(users)
+      console.log(users);
 
       const fechaActual = new Date();
       const fecha2DiasAntes = new Date();
-      const deletedUsers = users.data.map( async (user) => {
-        if(user.rol=="admin" || user.rol=="premium") return; // Evito eliminar usuarios admin o premium
-        const updatedAt = user.updatedAt
+      const deletedUsers = users.data.map(async (user) => {
+        if (user.rol == "admin" || user.rol == "premium") return; // Evito eliminar usuarios admin o premium
+        const updatedAt = user.updatedAt;
         // Resta 2 días a la fecha actual
         fecha2DiasAntes.setDate(fechaActual.getDate() - 2);
         //fecha2DiasAntes.setMinutes(fechaActual.getMinutes() - 1); // Ejecuta cada 1 Minutos
         //Compara si la fecha updatedAt está dentro de los últimos 2 días
         if (updatedAt >= fecha2DiasAntes && updatedAt <= fechaActual) {
-          console.log(`Usuario: ${user.name}, NO superar los 2 días de inactividad`);
-          return
+          console.log(
+            `Usuario: ${user.name}, NO superar los 2 días de inactividad`
+          );
+          return;
         } else {
-          const deletedUser = await usersService.delete(user._id)
-          console.log(`Usuario ${user.name} eliminado por superar los 2 días de inactividad. id: ${user._id}` );
-          return
+          const deletedUser = await usersService.delete(user._id);
+          console.log(
+            `Usuario ${user.name} eliminado por superar los 2 días de inactividad. id: ${user._id}`
+          );
+          return;
         }
       });
     } catch (e) {
@@ -276,6 +290,32 @@ class UsersService {
       }
       user = await this.getByEmail(username); // Consulto el nuevo usuario para retornarlo
       return user.data;
+    } catch (e) {
+      console.log(e);
+      return { message: `Error inesperado al registrar el usuario. ${e}` };
+    }
+  }
+
+  async userCreateRegisterGitHub(profile) {
+    const username = profile.username;
+    try {
+      let user = await this.usersRepository.getByUsername(username); // hago el registro con username porq github no me retorna el email
+      if (user?.username == username ) {
+        //console.log(`El usuario ${profile.username} ya existe`);
+        return user
+      }
+      // El usuario no existe, lo creo.
+      let newUser = {
+        username: profile.username,
+        name: profile._json.name,
+      };
+      //newUser = await usersModel.create(newUser)
+      newUser = await this.usersRepository.post(newUser); // Creo el usuario
+      if (!newUser.username) {
+        return { message: "Error al crear el registro de usuario" };
+      }
+      //user = await this.getByEmail(username); // Consulto el nuevo usuario para retornarlo
+      return newUser;
     } catch (e) {
       console.log(e);
       return { message: `Error inesperado al registrar el usuario. ${e}` };
