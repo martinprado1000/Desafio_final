@@ -191,11 +191,15 @@ class UsersService {
     if (!isValid(id)) {
       return { status: 404, data: "ID de usuario invalido" };
     }
+    if (id == "658c5e0cd88757412d0532a5") {
+      return { status: 404, data: "No se puede eliminar este usuario, usuario SuperAdmin" };
+    }
     try {
       if (!id) {
         return { status: 400, data: "Debe enviar un ID valido" };
       }
       const result = await this.usersRepository.delete(id);
+      console.log(result)
       if (result.deletedCount == 0) {
         return { status: 404, data: "Usuario no encontrado" };
       }
@@ -210,29 +214,26 @@ class UsersService {
     try {
       const usersService = new UsersService();
       const users = await usersService.get();
+      console.log(users)
 
       const fechaActual = new Date();
       const fecha2DiasAntes = new Date();
       const deletedUsers = users.data.map( async (user) => {
-        if(user.rol=="admin") return; // Evito eliminar usuarios admin
+        if(user.rol=="admin" || user.rol=="premium") return; // Evito eliminar usuarios admin o premium
         const updatedAt = user.updatedAt
         // Resta 2 días a la fecha actual
         fecha2DiasAntes.setDate(fechaActual.getDate() - 2);
-        //fecha60DiasAntes.setMinutes(fechaActual.getMinutes() - 1); // Minutos
+        //fecha2DiasAntes.setMinutes(fechaActual.getMinutes() - 1); // Ejecuta cada 1 Minutos
         //Compara si la fecha updatedAt está dentro de los últimos 2 días
         if (updatedAt >= fecha2DiasAntes && updatedAt <= fechaActual) {
-          console.log(`Usuario: ${user.email}, NO superar los 2 días de inactividad`);
+          console.log(`Usuario: ${user.name}, NO superar los 2 días de inactividad`);
           return
         } else {
           const deletedUser = await usersService.delete(user._id)
-          console.log(`Usuario ${user.email} eliminado por superar los 2 días de inactividad. id: ${user._id}` );
+          console.log(`Usuario ${user.name} eliminado por superar los 2 días de inactividad. id: ${user._id}` );
           return
         }
       });
-      // if (result.deletedCount == 0) {
-      //   return { status: 404, data: "Ningun usuario inactivo" };
-      // }
-      // return { status: 201, data: "Usuario eliminado correctamente" };
     } catch (e) {
       console.log(e);
       return { status: 500, data: "Error inesperado en el sistema" };

@@ -14,6 +14,15 @@ class CartsDAOMongo {
     }
   }
 
+  async get2() {
+    try {
+      return await this.cartsModel.find();
+    } catch (e) {
+      console.log(e)
+      throw new Error("Error inesperado al realizar la consulta get");
+    }
+  }
+
   async getLean() {
     try {
       return await this.cartsModel.find().populate("products.product").lean();

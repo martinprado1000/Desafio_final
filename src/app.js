@@ -87,7 +87,7 @@ app.use("/",cartsRoutesViews)
 app.use("/",sessionsRoutesViews)
 app.use("/",usersRouterView)
 
-// Ejecuto el chequeo de usuarios inactivos
+// Ejecuto el chequeo de usuarios inactivos cada 1 hora
 setInterval(UsersService.deleteInactiveUsers, 60 * 60 * 1000);
 
 //Ruta incorrecta
