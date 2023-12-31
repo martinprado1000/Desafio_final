@@ -47,7 +47,8 @@ class ProductsDAOMongo {
 
   async put(id, body) {
     try {
-      return await this.productsModel.findByIdAndUpdate( id, { $set: body });
+      return await this.productsModel.findByIdAndUpdate( id , { $set: body }); // Esto retorna el usuarios viejo, que queremos que me retorne el usuario ya editado lo hacemos de la siguiente manera:
+      //return await this.productsModel.findByIdAndUpdate( id , { $set: body } , {new:true} ); // Le agrego { new:true } para que me retorne el usuario ya editado.
     } catch (e) {
       throw new Error("Error inesperado al realizar la consulta");
     }

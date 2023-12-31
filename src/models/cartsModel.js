@@ -15,7 +15,7 @@ const cartsSchema = new Schema(
         {
           product: {
             // Aca es el valor que guardamos en este documento
-            type: Schema.Types.ObjectId, // Aca le decimos que el tipo de dato es que va a ser referencia a otra colleccion
+            type: Schema.Types.ObjectId, // Aca le decimos que el tipo de dato es un objetId de mongoose, que este va a ser referencia a otra colleccion
             ref: "products", // Aca le indicamos que hace referencia a la colleccion products
           },
           quantity: Number,
