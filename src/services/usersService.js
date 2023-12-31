@@ -199,15 +199,17 @@ class UsersService {
     if (!isValid(id)) {
       return { status: 404, data: "ID de usuario invalido" };
     }
-    if (id == "658c5e0cd88757412d0532a5") {
-      return {
-        status: 404,
-        data: "No se puede eliminar este usuario, usuario SuperAdmin",
-      };
-    }
     try {
       if (!id) {
         return { status: 400, data: "Debe enviar un ID valido" };
+      }
+      const isSuperAdmin = await this.usersRepository.getById(id);
+      console.log(isSuperAdmin)
+      if (isSuperAdmin?.email == "superAdmin@gmail.com") {
+        return {
+          status: 404,
+          data: "No se puede eliminar este usuario, usuario SuperAdmin",
+        };
       }
       const result = await this.usersRepository.delete(id);
       if (result.deletedCount == 0) {
