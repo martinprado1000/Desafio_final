@@ -195,7 +195,7 @@ class ProductsService {
   async delete(pid) {
     try {
 
-      const product = await this.getById(pid);
+      const product = await this.getById(pid); 
       let carts = await this.CartsRepository.get2();
 
       // Elimino el producto de todos los carritos

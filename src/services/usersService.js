@@ -205,7 +205,7 @@ class UsersService {
       }
       const isSuperAdmin = await this.usersRepository.getById(id);
       console.log(isSuperAdmin)
-      if (isSuperAdmin?.email == "superAdmin@gmail.com") {
+      if (isSuperAdmin?.email == "superadmin@superadmin.com") {
         return {
           status: 404,
           data: "No se puede eliminar este usuario, usuario SuperAdmin",
@@ -226,8 +226,6 @@ class UsersService {
     try {
       const usersService = new UsersService();
       const users = await usersService.get();
-      console.log(users);
-
       const fechaActual = new Date();
       const fecha2DiasAntes = new Date();
       const deletedUsers = users.data.map(async (user) => {

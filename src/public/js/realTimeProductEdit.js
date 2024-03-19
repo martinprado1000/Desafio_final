@@ -80,7 +80,7 @@ const buttonFn = () => {
       })
         .then((res) => JSON.stringify(res))
         .then((res) => {
-          console.log("se destruyo la sesion");
+          
         });
     };
   }
