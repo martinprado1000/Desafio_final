@@ -1,0 +1,2 @@
+https://ecommerce-ssr.onrender.com/login
+https://ecommerce-ssr.onrender.com/realTimeProducts
