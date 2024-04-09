@@ -3,6 +3,8 @@ const passportLocal = require("passport-local");
 const usersModel = require("../models/usersModel");
 const GitHubStrategy = require("passport-github2")
 
+console.log("jjjjjjjjjjjjjjjjjjjjj")
+
 const githubStrategy = 
 passport.use("github", new GitHubStrategy( 
     { 

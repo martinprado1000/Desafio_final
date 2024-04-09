@@ -1,6 +1,14 @@
 const passport = require("passport");
 const GitHubStrategy = require("passport-github2");
 const UsersService = require("../services/usersService");
+const configEnvFn = require ("../config.env/configEnv")
+
+const config = configEnvFn();
+const url_front = config.url_front
+console.log(url_front)
+console.log(url_front)
+console.log(url_front)
+console.log(url_front)
 
 this.usersService = new UsersService();
 
@@ -10,7 +18,8 @@ const githubStrategy = passport.use(
     {
       clientID: "Iv1.60312c44dbb83c65",
       clientSecret: "103d6a1e8d8691c19f60cd265dbd13625bf19e86",
-      callbackURL: "http://localhost:8080/api/loginGithub-callback",
+      callbackURL: `${url_front}/api/loginGithub-callback`,
+      //callbackURL: "http://localhost:8080/api/loginGithub-callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       //accessToken: se usa para leer datos de la aplicacion de git, refreshToken: es para actualizar el token despues del tiempo de vida, profile: viene la informacion de github.
